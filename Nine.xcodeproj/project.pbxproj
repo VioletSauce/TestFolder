@@ -15,6 +15,11 @@
 		90D3ED871A27DB7D00FC2CBB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90D3ED861A27DB7D00FC2CBB /* Images.xcassets */; };
 		90D3ED8A1A27DB7D00FC2CBB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90D3ED881A27DB7D00FC2CBB /* LaunchScreen.xib */; };
 		90D3ED961A27DB7E00FC2CBB /* NineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D3ED951A27DB7E00FC2CBB /* NineTests.swift */; };
+		90DB206C1A2894CE00920156 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90DB206B1A2894CE00920156 /* iAd.framework */; };
+		90DB206F1A28954E00920156 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90DB206E1A28954E00920156 /* GameKit.framework */; };
+		90DB20711A28956F00920156 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90DB20701A28956F00920156 /* StoreKit.framework */; };
+		90DB20731A289CE000920156 /* DifficultyStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DB20721A289CE000920156 /* DifficultyStruct.swift */; };
+		90DB20751A289DB000920156 /* gameStages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DB20741A289DB000920156 /* gameStages.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +37,7 @@
 		90D3ED7A1A27DB7D00FC2CBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90D3ED7B1A27DB7D00FC2CBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90D3ED7D1A27DB7D00FC2CBB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		90D3ED7F1A27DB7D00FC2CBB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		90D3ED7F1A27DB7D00FC2CBB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GameScene.swift; sourceTree = "<group>"; };
 		90D3ED811A27DB7D00FC2CBB /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		90D3ED841A27DB7D00FC2CBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90D3ED861A27DB7D00FC2CBB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -40,6 +45,11 @@
 		90D3ED8F1A27DB7E00FC2CBB /* NineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		90D3ED941A27DB7E00FC2CBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90D3ED951A27DB7E00FC2CBB /* NineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NineTests.swift; sourceTree = "<group>"; };
+		90DB206B1A2894CE00920156 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		90DB206E1A28954E00920156 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		90DB20701A28956F00920156 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		90DB20721A289CE000920156 /* DifficultyStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DifficultyStruct.swift; sourceTree = "<group>"; };
+		90DB20741A289DB000920156 /* gameStages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = gameStages.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +57,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90DB20711A28956F00920156 /* StoreKit.framework in Frameworks */,
+				90DB206F1A28954E00920156 /* GameKit.framework in Frameworks */,
+				90DB206C1A2894CE00920156 /* iAd.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,7 @@
 		90D3ED6D1A27DB7C00FC2CBB = {
 			isa = PBXGroup;
 			children = (
+				90DB206D1A2894ED00920156 /* Frameeworks */,
 				90D3ED781A27DB7D00FC2CBB /* Nine */,
 				90D3ED921A27DB7E00FC2CBB /* NineTests */,
 				90D3ED771A27DB7D00FC2CBB /* Products */,
@@ -84,6 +98,8 @@
 				90D3ED7B1A27DB7D00FC2CBB /* AppDelegate.swift */,
 				90D3ED7D1A27DB7D00FC2CBB /* GameScene.sks */,
 				90D3ED7F1A27DB7D00FC2CBB /* GameScene.swift */,
+				90DB20741A289DB000920156 /* gameStages.swift */,
+				90DB20721A289CE000920156 /* DifficultyStruct.swift */,
 				90D3ED811A27DB7D00FC2CBB /* GameViewController.swift */,
 				90D3ED831A27DB7D00FC2CBB /* Main.storyboard */,
 				90D3ED861A27DB7D00FC2CBB /* Images.xcassets */,
@@ -116,6 +132,16 @@
 				90D3ED941A27DB7E00FC2CBB /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		90DB206D1A2894ED00920156 /* Frameeworks */ = {
+			isa = PBXGroup;
+			children = (
+				90DB20701A28956F00920156 /* StoreKit.framework */,
+				90DB206E1A28954E00920156 /* GameKit.framework */,
+				90DB206B1A2894CE00920156 /* iAd.framework */,
+			);
+			name = Frameeworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,7 +246,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				90D3ED801A27DB7D00FC2CBB /* GameScene.swift in Sources */,
+				90DB20731A289CE000920156 /* DifficultyStruct.swift in Sources */,
 				90D3ED821A27DB7D00FC2CBB /* GameViewController.swift in Sources */,
+				90DB20751A289DB000920156 /* gameStages.swift in Sources */,
 				90D3ED7C1A27DB7D00FC2CBB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,6 +443,7 @@
 				90D3ED9B1A27DB7E00FC2CBB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		90D3ED9C1A27DB7E00FC2CBB /* Build configuration list for PBXNativeTarget "NineTests" */ = {
 			isa = XCConfigurationList;
@@ -423,6 +452,7 @@
 				90D3ED9E1A27DB7E00FC2CBB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

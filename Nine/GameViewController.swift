@@ -26,10 +26,12 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
 
+    override func viewWillLayoutSubviews() {
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
             let skView = self.view as SKView
@@ -38,17 +40,16 @@ class GameViewController: UIViewController {
             
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
-            
-            /* Set the scale mode to scale to fit the window */
+            scene.size = skView.bounds.size
             scene.scaleMode = .AspectFill
-            
             skView.presentScene(scene)
+            
         }
     }
 
-    override func shouldAutorotate() -> Bool {
+ /*   override func shouldAutorotate() -> Bool {
         return true
-    }
+    } */
 
     override func supportedInterfaceOrientations() -> Int {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
