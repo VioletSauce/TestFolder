@@ -17,4 +17,5 @@ struct DifficultyLevel {
     var brForLevel:CGFloat!
     var diffNum:Int!
     var speedMod:CGFloat!
+    var patternNum: Int!
 }

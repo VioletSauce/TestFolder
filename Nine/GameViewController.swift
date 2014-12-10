@@ -8,6 +8,7 @@
 
 import UIKit
 import SpriteKit
+import iAd
 
 extension SKNode {
     class func unarchiveFromFile(file : NSString) -> SKNode? {
@@ -24,25 +25,56 @@ extension SKNode {
         }
     }
 }
+    var didLoad:Bool = false
+class GameViewController: UIViewController, ADBannerViewDelegate {
+    
+    @IBOutlet weak var bannerView: ADBannerView!
+    var skView:SKView!
+    
 
-class GameViewController: UIViewController {
     
     override func viewDidLoad() {
+ //       if !didLoad {
         super.viewDidLoad()
+ //       self.canDisplayBannerAds = true
+        self.bannerView.delegate = self
+//        }
     }
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        bannerView.hidden = false
+    }
+    
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        bannerView.hidden = true
+    }
+    
 
+    func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
+ //       if currentGameState != gameStages.MainMenu {
+        if currentGameState != gameStages.GamePaused {
+            gameStateBeforePause = currentGameState
+        }
+            currentGameState = gameStages.GamePaused
+  //      }
+        return true
+    }
+    func bannerViewActionDidFinish(banner: ADBannerView!) {
+ //       currentGameState = gameStateBeforePause
+    }
+    
     override func viewWillLayoutSubviews() {
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
-            let skView = self.view as SKView
+            if !didLoad {
+            skView = self.view as SKView
             skView.showsFPS = true
             skView.showsNodeCount = true
-            
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
             scene.size = skView.bounds.size
             scene.scaleMode = .AspectFill
             skView.presentScene(scene)
+                didLoad = true
+            }
             
         }
     }
@@ -66,5 +98,11 @@ class GameViewController: UIViewController {
 
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let gameOverVC = segue.destinationViewController as GameOverViewController
+//        dismissViewControllerAnimated(false, completion: nil)
+        gameOverVC.interstitialPresentationPolicy = ADInterstitialPresentationPolicy.Manual
     }
 }

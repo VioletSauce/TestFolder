@@ -9,5 +9,5 @@
 import Foundation
 
 enum gameStages {
-    case MainMenu, GameGoing, GameOver
+    case MainMenu, GameGoing, GameOver, GamePaused
 }

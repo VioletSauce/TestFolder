@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import iAd
+
+var GameSceneDelegate = GameScene.self
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
