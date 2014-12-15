@@ -8,6 +8,7 @@
 
 import UIKit
 import iAd
+import CoreData
 
 class GameOverViewController: UIViewController, ADInterstitialAdDelegate {
 
@@ -17,78 +18,69 @@ class GameOverViewController: UIViewController, ADInterstitialAdDelegate {
     var loosingStreak:Int = 0
     var failLoad:Int = 0
     
+    var SavedScoress:NSManagedObject!
+    var managedContext:NSManagedObjectContext!
+    
     @IBOutlet weak var scoreNowLabel: UILabel!
     @IBOutlet weak var scoreBestLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let appDel = UIApplication.sharedApplication().delegate as AppDelegate
+        managedContext = appDel.managedObjectContext
+
+//        println("aaa)")
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     override func viewDidAppear(animated: Bool) {
   //      loosingStreak++
-        requestInterstitialAdPresentation()
+        let request = NSFetchRequest()
+        var entity = NSEntityDescription.entityForName("SavedScores", inManagedObjectContext: managedContext)
+        request.entity = entity
+        var scores:NSArray = managedContext.executeFetchRequest(request, error: nil)!
+        var highScores:Int = scores[0].valueForKey("highScore") as Int
+        println(highScores)
+        if highScores < score {
+            scores[0].setValue(score, forKey: "highScore")
+            managedContext.save(nil)
+            scoreBestLabel.text = "\(score)"
+
+        } else {
+            scoreBestLabel.text = "\(highScores)"
+        }
+        scoreBestLabel.font = UIFont(name: "\(scoreBestLabel.font.fontName)", size: scoreBestLabel.frame.size.height)
         scoreNowLabel.text = "\(score)"
-   //     scoreNowLabel.font
-        //    if loosingStreak == 5 {
- //       cicleAD()
-        //        loosingStreak = 0
-        //    }
+        scoreNowLabel.font = UIFont(name: "\(scoreNowLabel.font.fontName)", size: scoreNowLabel.frame.size.height)
+        requestInterstitialAdPresentation()
+ //           gameOvered = false
+//        }
+
     }
-  //  func interstitialAdDidLoad(interstitialAd: ADInterstitialAd!) {
-  //      adView = UIView(frame: self.view.bounds)
-  //      closeButton = UIButton(frame: CGRectMake(20, 20, 20, 20))
-  //      closeButton.setTitle("X", forState: UIControlState.Normal)
-  //      closeButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-  //      closeButton.addTarget(self, action: Selector("close"), forControlEvents: UIControlEvents.TouchDown)
-  //      self.view.addSubview(adView)
-  //      self.view.addSubview(closeButton)
-  //      fullScreenAd.presentInView(adView)
-  //  }
+        
     func interstitialAdDidUnload(interstitialAd: ADInterstitialAd!) {
         loadingAD = true
     }
     func interstitialAd(interstitialAd: ADInterstitialAd!, didFailWithError error: NSError!) {
-     //   loadingAD = true
-     //   if failLoad <= 20 {
-      //      cicleAD()
-      //      failLoad++
-      //      println("RETRYED")
-      //  } else {
-      //      failLoad = 0
-      //      println("Gived up")
-      //  }
         
     }
-
     
-    func cicleAD() {
-//        if loadingAD {
-//            fullScreenAd = ADInterstitialAd()
-//            fullScreenAd.delegate = self
-//            loadingAD = false
-//            requestInterstitialAdPresentation()
-//        }
-    }
-    func close() {
-//        self.adView.removeFromSuperview()
-//        self.closeButton.removeFromSuperview()
+    func saveContent(scoreGet:Int) {
+        
     }
     @IBAction func restartGame(sender: UIButton) {
+        Flurry.logEvent("GameRestartedAfterGameOver")
         dismissViewControllerAnimated(false, completion: nil)
         UIViewController.prepareInterstitialAds()
         restarted = true
         notFinishRestarted = true
- //       performSegueWithIdentifier("restartGameSegue", sender: nil)
- //         }
- //   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
- //       let gameVC = segue.destinationViewController as GameViewController
- //       didLoad = false
- //       notInited = true
 
     }
     @IBAction func shareButtonPressed(sender: UIButton) {
-        println("pressed!")
+        let shareActivity = "I score a \(score) in 9! Can you beat me?"
+        let activityVC:UIActivityViewController = UIActivityViewController(activityItems: [shareActivity], applicationActivities: nil)
+        self.presentViewController(activityVC, animated: true, completion: nil)
+        Flurry.logEvent("ShareButtonPressed", withParameters: NSDictionary(object: score, forKey: "ScoreWhenShared"))
     }
 }

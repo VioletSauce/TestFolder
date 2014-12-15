@@ -10,6 +10,8 @@ import UIKit
 import SpriteKit
 import iAd
 
+
+var gameOvered:Bool = false
 extension SKNode {
     class func unarchiveFromFile(file : NSString) -> SKNode? {
         if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
@@ -47,15 +49,21 @@ class GameViewController: UIViewController, ADBannerViewDelegate {
     func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
         bannerView.hidden = true
     }
-    
 
     func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
  //       if currentGameState != gameStages.MainMenu {
-        if currentGameState != gameStages.GamePaused {
-            gameStateBeforePause = currentGameState
-        }
-            currentGameState = gameStages.GamePaused
+       
+  //      if currentGameState != gameStages.GamePaused {
+  //          gameStateBeforePause = currentGameState
   //      }
+  //          currentGameState = gameStages.GamePaused
+  //      }
+        NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
+ //       wasBanner = false
+        if touchess == 1 {
+            didSucceded = true
+            numOfTouches.text = "0"
+        }
         return true
     }
     func bannerViewActionDidFinish(banner: ADBannerView!) {
@@ -101,6 +109,7 @@ class GameViewController: UIViewController, ADBannerViewDelegate {
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        gameOvered = true
         let gameOverVC = segue.destinationViewController as GameOverViewController
 //        dismissViewControllerAnimated(false, completion: nil)
         gameOverVC.interstitialPresentationPolicy = ADInterstitialPresentationPolicy.Manual

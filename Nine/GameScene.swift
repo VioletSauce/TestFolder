@@ -8,28 +8,11 @@
 
 import SpriteKit
 import UIKit
+import Foundation
 import AVFoundation
 import iAd
 
-//Переменные для параметров разных уровней игры
-var difficultyNow:DifficultyLevel!
-var easyDiff:DifficultyLevel!
-var mediumDiff:DifficultyLevel!
-var hardDiff:DifficultyLevel!
-
 var currentGameState:gameStages!
-
-//Ноды объектов
-
-var numbersNode = SKNode()
-
-var groundNode = SKNode()
-
-var explosion = SKShapeNode(circleOfRadius: 50)
-
-var scoreNode = SKLabelNode()
-
-var bossNode = SKLabelNode()
 
 //Ноды для текста
 var labelsNode = SKNode()
@@ -53,6 +36,13 @@ let sizeOfNumbersConts:CGFloat = 1.5
 
 //Общий модификатор размеров надписей
 let sizeStandartforFonts:CGFloat = 2
+let sizeStandartforNumOfTouches:CGFloat = 1 //#leo насколько большой шрифт у надписи с количеством касаний
+let heightModforNumOfTouches:CGFloat = 1 // #leo как высоко будет надо пальцем цифра
+
+
+
+
+
 
 //#leo размер для цифр
 let fontSizeMin:CGFloat = 60
@@ -134,7 +124,7 @@ var nextBoss:Int!
 var timeOfBosses:Int = 0
 
 let minTime:Int = 10 //#leo временной промежуток боссов в секундах
-let maxTime:Int = 12
+let maxTime:Int = 20
 let timeBossForRandom:Int = maxTime - minTime
 
 var currentReward:Int!
@@ -143,7 +133,7 @@ let bonusRewardMod:Int = 2
 
 var timeOfInv:Int = 0
 
-let bonusChance:Int = 100  //#leo подразумевается знаменатель то есть сейчас шанс 1/5 при спавне босса
+let bonusChance:Int = 5  //#leo подразумевается знаменатель то есть сейчас шанс 1/5 при спавне босса
 
 let bossSpeedMod:CGFloat = 1 //#leo модификаторы скорости, использовать очень маленькие числа! типо 0,95
 let bonusSpeedMod:CGFloat = 1  //на эти числа домножается относительная скорость поэтому формулы в коде 
@@ -170,6 +160,9 @@ var boolTimerBoss:Bool = false
 var wasInvi:Bool = false
 var gamePaused:Bool = false
 
+var wasBanner:Bool = false
+var overingGame:Bool = false
+
 //Paused node
 var pausedNode = SKNode()
 
@@ -193,17 +186,49 @@ let sizeForPauseButtonMultiplier:CGFloat = 1
 var soundIsOn:Bool = true
 var backGroundMusic:AVAudioPlayer!
 var bgLoopMusic:NSURL!
-var error:NSErrorPointer!
 
 //SeguesVars
 var restarted:Bool = false
 var notFinishRestarted:Bool = true
 var restarting:Bool = false
 
+//Аналитика
+var wasScore:Int = 0
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+    //Переменные для параметров разных уровней игры
+    var difficultyNow:DifficultyLevel!
+    var easyDiff:DifficultyLevel!
+    var mediumDiff:DifficultyLevel!
+    var hardDiff:DifficultyLevel!
+
+    //Ноды объектов
+    
+    var numbersNode = SKNode()
+    
+    var groundNode = SKNode()
+    
+    var explosion = SKShapeNode(circleOfRadius: 50)
+    
+    var scoreNode = SKLabelNode()
+    
+    var bossNode = SKLabelNode()
+    
+    var xTwoNode = SKNode()
+    
+    var beginRandomizeBosses:Bool = false
+    
+    var circleOfXTwo:SKShapeNode!
+    
+    var xTwo:SKLabelNode!
+
+    
     override func didMoveToView(view: SKView) {
         if notInited {
+            var notificationCenter:NSNotificationCenter = NSNotificationCenter.defaultCenter()
+            notificationCenter.addObserver(self, selector: Selector("pauseGame"), name: "pauseGamePlease", object: nil)
+            notificationCenter.addObserver(self, selector: Selector("pauseView"), name: "pauseViewPlease", object: nil)
             self.addChild(labelsNode)
             self.addChild(numbersNode)
             initEverything()
@@ -217,9 +242,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             backGroundMusic.prepareToPlay()
             soundIsOn = true
         }
-        
 
-
+    }
+    
+    func pauseView() {
+        self.scene?.paused = true
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -231,8 +258,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if node.name == "pauseButton" {
             buttonTouched = true
             if currentGameState == gameStages.GamePaused {
+                Flurry.endTimedEvent("TimeBeforeFirstRestartPressed", withParameters: nil)
+                Flurry.logEvent("GameRestarted")
                 restartGame()
             } else {
+                Flurry.endTimedEvent("TimeBeforeFirstPausePressed", withParameters: nil)
+                Flurry.logEvent("GamePaused")
                 pauseGame()
             }
         }
@@ -241,17 +272,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if soundIsOn {
                 backGroundMusic.stop()
                 soundNode.texture = soundOffTexture
+                Flurry.endTimedEvent("TimeBeforeSoundOffStarted", withParameters: nil)
+                Flurry.logEvent("SoundOFFButtonPressed")
             } else {
                 if currentGameState != gameStages.MainMenu && currentGameState != gameStages.GamePaused {
                 backGroundMusic.play()
                 }
                 soundNode.texture = soundOnTexture
+                Flurry.logEvent("SoundONButtonPressed")
             }
             soundIsOn = !soundIsOn
         }
 
         
-        if !buttonTouched {
+        if !buttonTouched  && !wasBanner {
         switch(currentGameState as gameStages) {
         case .MainMenu:
             numbersNode.speed = 1
@@ -272,7 +306,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             labelsNode.removeAllChildren()
             numOfTouches.text = "\(touchess)"
-            numOfTouches.position = CGPointMake(100, 100)
+            numOfTouches.fontSize = self.frame.size.width / 1000 * 80 * sizeStandartforNumOfTouches
+     //       numOfTouches.position = CGPointMake(100, 100)
             numOfTouches.zPosition = 10
             for num in numbersNode.children {
                 if let curNum = num as? SKLabelNode {
@@ -284,18 +319,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //        self.addChild(numOfTouches)
             self.addChild(scoreNode)
             self.addChild(pauseNode)
+            soundNode.removeFromParent()
             currentPattern = arrayOfPatterns[Int(arc4random_uniform(UInt32(arrayOfPatterns.count)))]
             nextBoss = Int(arc4random_uniform(UInt32(timeBossForRandom))) + minTime
             backGroundMusic.play()
+            self.scene?.paused = false
+            setUpFlurry()
        case .GameGoing:
             if !invincibility && !isBoss{
             if !timerForTouchesIsRunning {
                  timerForTouches = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("getEm"), userInfo: nil, repeats: true)
+                if difficultyNow.diffNum != easyDiff.diffNum {
+                    self.addChild(numOfTouches)
+                }
                 timerForTouchesIsRunning = true
             }
             timeOfTouches = 0
             touchess++
             numOfTouches.text = "\(touchess)"
+                numOfTouches.position = CGPointMake(location.x, location.y + 25 * heightModforNumOfTouches + self.frame.size.width / 1000 * 80 * sizeStandartforNumOfTouches / 2)
             }
             if !invincibility && isBoss {
                 affectBoss()
@@ -383,12 +425,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bossNode.fontSize = bossNode.fontSize - (self.frame.size.width / 3 - self.frame.size.width / 1000 * 30) / CGFloat(currentReward)
             if bossNode.text.toInt() == 0 {
                 score += currentReward * bossRewardMod
-                scoreNode.text = "\(score)"
+                scoreNode.text = "Score: \(score)"
+                resizeScores()
                 bossNode.removeFromParent()
                 invincibility = true
                 tempInvTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("tempInv"), userInfo: nil, repeats: true)
                 timerForBosses = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("countBosses"), userInfo: nil, repeats: true)
                 boolTimerBoss = true
+                xTwoNode.alpha = 1
+                xTwoNode.runAction(SKAction.sequence([SKAction.waitForDuration(0.2), SKAction.fadeAlphaTo(0, duration: 0.5)]))
             }
         }
     }
@@ -429,13 +474,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         pauseNode = SKSpriteNode(texture: pauseStopTexture)
         pauseNode.size = CGSizeMake(self.frame.size.width / 10 * sizeForPauseButtonMultiplier, self.frame.size.width / 10 * sizeForPauseButtonMultiplier)
-        pauseNode.position = CGPointMake(self.frame.size.width * 2 / 16 * fieldsForPauseButtonMultiplier, self.frame.size.width * 2 / 16 * fieldsForPauseButtonMultiplier)
+        pauseNode.position = CGPointMake(self.frame.size.width * 14 / 16 * fieldsForPauseButtonMultiplier, self.frame.size.width * 2 / 16 * fieldsForPauseButtonMultiplier)
         pauseNode.name = "pauseButton"
         pauseNode.zPosition = 60
  //       self.addChild(pauseNode)
         soundNode = SKSpriteNode(texture: soundOnTexture)
         soundNode.size = CGSizeMake(self.frame.size.width / 10 * sizeForPauseButtonMultiplier, self.frame.size.width / 10 * sizeForPauseButtonMultiplier)
-        soundNode.position = CGPointMake(self.frame.size.width * 14 / 16 * fieldsForPauseButtonMultiplier, self.frame.size.width * 2 / 16 * fieldsForPauseButtonMultiplier)
+        soundNode.position = CGPointMake(self.frame.size.width * 2 / 16 * fieldsForPauseButtonMultiplier, self.frame.size.width * 2 / 16 * fieldsForPauseButtonMultiplier)
         soundNode.name = "soundNode"
         soundNode.zPosition = 60
         self.addChild(soundNode)
@@ -455,7 +500,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             boolTimerChanging = true
         
         //Нод земли
-        var sizeForGround:CGSize = CGSizeMake(self.frame.size.width, 1)
+        var sizeForGround:CGSize = CGSizeMake(self.frame.size.width, 30)
         groundNode.physicsBody = SKPhysicsBody(rectangleOfSize: sizeForGround)
         groundNode.physicsBody?.dynamic = false
         groundNode.physicsBody?.categoryBitMask = groundCollisionMask
@@ -463,9 +508,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    //     groundNode.physicsBody?.contactTestBitMask = numberCollisionMask
         self.addChild(groundNode)
         
-        scoreNode = createTextNode("\(score)", xPosition: self.frame.size.width - 100, yPosition: 100, zPosition: 10, fontName: "Helvetica", fontSize: 50, color: UIColor.whiteColor())
+        scoreNode = createTextNode("Score: \(score)", xPosition: self.frame.size.width * 1/16, yPosition: self.frame.size.width * 2/16, zPosition: 10, fontName: "Helvetica", fontSize: 30 * multiForIpad(), color: UIColor.whiteColor())
         
+     //   scoreNode.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+        scoreNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
         currentPattern = arrayOfPatterns[0]
+        circleOfXTwo = SKShapeNode(circleOfRadius: scoreNode.frame.size.height / 2)
+        circleOfXTwo.fillColor = UIColor.whiteColor()
+        circleOfXTwo.strokeColor = SKColor.clearColor()
+        circleOfXTwo.zPosition = 60
+        circleOfXTwo.position = CGPointMake(scoreNode.position.x + scoreNode.frame.size.width + circleOfXTwo.frame.size.width / 2, scoreNode.position.y + scoreNode.frame.size.height / 2)
+        xTwo = createTextNode("x2", xPosition: circleOfXTwo.position.x, yPosition: circleOfXTwo.position.y, zPosition: 61, fontName: "Helvetica", fontSize: 20 * multiForIpad(), color: UIColor.blackColor())
+        xTwo.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+ //       xTwo.position = CGPointMake(xTwo.position.x, xTwo.position.y - xTwo.frame.size.height / 2)
+        
+        xTwoNode.addChild(circleOfXTwo)
+        xTwoNode.addChild(xTwo)
+        xTwoNode.alpha = 0
+        self.addChild(xTwoNode)
+//        xTwoNode.alpha = 1
         
         nextSpeed = CGFloat(arc4random_uniform(UInt32(20))) - CGFloat(10.0)
         //Инициализация паузы
@@ -510,13 +571,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if isBonus {
                 bossNode.removeFromParent()
                 score += bossNode.text.toInt()! * bonusRewardMod
-                scoreNode.text = "\(score)"
+                scoreNode.text = "Score: \(score)"
+                resizeScores()
                 invincibility = true
                 tempInvTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("tempInv"), userInfo: nil, repeats: true)
                 timerForBosses = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("countBosses"), userInfo: nil, repeats: true)
+                xTwoNode.alpha = 1
+                xTwoNode.runAction(SKAction.sequence([SKAction.waitForDuration(0.2), SKAction.fadeAlphaTo(0, duration: 0.5)]))
                 boolTimerBoss = true
             }
         }
+    }
+    
+    func multiForIpad() -> CGFloat {
+        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+            return 1.3
+        } else {
+            return 1
+        }
+ 
     }
     
     func changeBGColor() {
@@ -552,18 +625,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Проверка и изменение сложности
         switch difficultyNow.diffNum {
         case 1:
+            Flurry.endTimedEvent("TimeForFirstLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForFirstLevel"))
             difficultyNow = mediumDiff
             currentBr = difficultyNow.brForLevel
             currentSat = difficultyNow.satForLevel
             numOfTouches.text = "0"
-            self.addChild(numOfTouches)
+ //           self.addChild(numOfTouches)
+            Flurry.logEvent("TimeForSecondLevel", timed: true)
+            wasScore = score
         case 2:
+            Flurry.endTimedEvent("TimerForSecondLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForSecondLevel"))
             difficultyNow = hardDiff
             currentBr = difficultyNow.brForLevel
             currentSat = difficultyNow.satForLevel
+            Flurry.logEvent("TimeForThirdLevel", timed: true)
+            wasScore = score
         case 3:
- //           println("game over")
+            Flurry.endTimedEvent("TimeForThirdLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForThirdLevel"))
             currentGameState = .GameOver
+            Flurry.endTimedEvent("TimeBeforeEnd", withParameters: NSDictionary(object: score, forKey: "TotalScore"))
         default:
             return
         }
@@ -578,8 +658,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         explosion.strokeColor = SKColor.clearColor()
         explosion.fillColor = color
         explosion.zPosition = 5
-        explosion.runAction(SKAction.sequence([blow, SKAction.removeFromParent()]))
         if notFinal {
+        explosion.runAction(SKAction.sequence([blow, SKAction.customActionWithDuration(0.1, actionBlock: { (node, floatNum) -> Void in
+            for number in self.numbersNode.children {
+                if let curNum = number as? SKLabelNode {
+                    curNum.removeFromParent()
+                    
+                }
+            }
+            invincibility = false
+        }), SKAction.removeFromParent()]))
         timerForColoring = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("blikingExpl"), userInfo: nil, repeats: true)
             boolTimerColoring = true
         
@@ -587,6 +675,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             boolTimerAfterExpl = true
         }
         else {
+            explosion.runAction(SKAction.sequence([blow, SKAction.customActionWithDuration(0.1, actionBlock: { (node, CGFloatt) -> Void in
+                self.overGame()
+            }), SKAction.removeFromParent()]))
             invincibility = true
             timerForColoring?.invalidate()
             boolTimerColoring = false
@@ -594,12 +685,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             boolTimerSpawn = false
             boolTimerChanging = false
             explosion.fillColor = UIColor.whiteColor()
-            timeToOver = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(durationOfExplosion / 10), target: self, selector: Selector("overGame"), userInfo: nil, repeats: false)
+    //        timeToOver = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(durationOfExplosion / 10), target: self, selector: Selector("overGame"), userInfo: nil, repeats: false)
+            overingGame = true
             boolTimerToOver = true
         }
         timerForBosses.invalidate()
         boolTimerBoss = false
-            self.addChild(explosion)
+        self.addChild(explosion)
     }
     
     func bgAfterExplosion() {
@@ -616,12 +708,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 spawnNumbersTimer = NSTimer.scheduledTimerWithTimeInterval(spawnFrequency, target: self, selector: Selector("spawnNumberFunc"), userInfo: nil, repeats: true)
             boolTimerSpawn = true
             }
-            for number in numbersNode.children {
-                if let curNum = number as? SKLabelNode {
-                    curNum.removeFromParent()
-                }
-            }
-            invincibility = false
             timeForExplosion = 0
             timerAfterExpl?.invalidate()
             boolTimerAfterExpl = false
@@ -645,7 +731,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func getEm() {
+        var didHit:Bool = false
         timeOfTouches++
+        for numbers in numbersNode.children {
+            if let curNum = numbers as? SKLabelNode {
+                if curNum.text.toInt() == touchess {
+                    didHit = true
+                }
+            }
+        }
+        if didHit {
+            numOfTouches.fontName = "Helvetica-Bold"
+        } else {
+            numOfTouches.fontName = "HelveticaNeue-UltraLight"
+        }
         if timeOfTouches > waitingTime {
             for numbers in numbersNode.children {
                 if let curNum = numbers as? SKLabelNode {
@@ -659,6 +758,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if !didSucceded && !invincibility {
                 changeLevel()
                 if currentGameState == gameStages.GameOver {
+                    spawnNumbersTimer?.invalidate()
+                    boolTimerSpawn = false
                     letXplosion(CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2), color: UIColor.whiteColor(), notFinal: false)
                 } else {
                     if soundIsOn {
@@ -680,13 +781,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
               //  letXplosion(CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)), color: self.backgroundColor, notFinal: true)
             }
             }
-            scoreNode.text = toString(score)
+            scoreNode.text = "Score: \(score)"
+            resizeScores()
             didSucceded = false
             touchess = 0
             timeOfTouches = 0
             numOfTouches.text = "0"
             timerForTouches?.invalidate()
             timerForTouchesIsRunning = false
+            numOfTouches.fontName = "HelveticaNeue-UltraLight"
+            numOfTouches.removeFromParent()
         }
     }
     
@@ -716,6 +820,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         self.addChild(bossNode)
         timerForTouches?.invalidate()
+        numOfTouches.removeFromParent()
         timerForTouchesIsRunning = false
         timeOfTouches = 0
         touchess = 0
@@ -733,10 +838,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             default:
                 createBoss(false, sizeOfBoss: sizeForNow)
                 currentReward = sizeForNow
-                if bossNum < arrayOfSizes.count - 1 {
-                    bossNum++
-                    sizeForNow = arrayOfSizes[bossNum]
+                if !beginRandomizeBosses {
+                    if bossNum < arrayOfSizes.count - 1 {
+                        bossNum++
+                        } else {
+                    beginRandomizeBosses = true
+                    bossNum = Int(arc4random_uniform(UInt32(arrayOfSizes.count - 1)))
+                    }
+                } else {
+                    bossNum = Int(arc4random_uniform(UInt32(arrayOfSizes.count - 1)))
                 }
+                sizeForNow = arrayOfSizes[bossNum]
             }
             for num in numbersNode.children {
                 if let number = num as? SKLabelNode {
@@ -804,9 +916,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         explosion.removeAllActions()
         explosion.runAction(SKAction.removeFromParent())
+        pauseNode.removeFromParent()
+        scoreNode.removeFromParent()
+        xTwoNode.removeFromParent()
+        xTwoNode.alpha = 0
         
         explosion = SKShapeNode(circleOfRadius: 50 * self.frame.width / 1000 * 3)
         
+        numOfTouches.removeFromParent()
         timeOfTouches = 0
         timeForSpeed = 0
         timerForTouchesIsRunning = false
@@ -822,6 +939,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         isBonus = false
         preparedForBoss = false
         
+        currentReward = 0
+        bossNum = 0
+        sizeForNow = arrayOfSizes[bossNum]
+        beginRandomizeBosses = false
         
         boolTimerAfterExpl = false
         boolTimerChanging = false
@@ -862,8 +983,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         restarting = false
     }
     
-    func deInitEverything(isFinal:Bool) {
-        
+    func resizeScores() {
+        circleOfXTwo.position = CGPointMake(scoreNode.position.x + scoreNode.frame.size.width + circleOfXTwo.frame.size.width / 2, scoreNode.position.y + scoreNode.frame.size.height / 2)
+        xTwo.position = CGPointMake(circleOfXTwo.position.x, circleOfXTwo.position.y)
+
     }
     
     func ouch() {
@@ -913,18 +1036,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if boolTimerSpeed {
             timerForSpeed.invalidate()
         }
-   //     if boolTimerToOver {
-   //         timeToOver.invalidate()
-   //     }
+  //      if boolTimerToOver {
+  //          timeToOver.invalidate()
+  //      }
         if boolTimerBoss {
             timerForBosses.invalidate()
         }
         wasInvi = invincibility
         invincibility = true
-         self.scene?.paused = true
+        self.scene?.paused = true
         gamePaused = true
         pauseNode.texture = pauseReplayTextur
         backGroundMusic.stop()
+        numbersNode.speed = 0
+        bossNode.speed = 0
+        explosion.speed = 0
+        scoreNode.removeFromParent()
+        self.addChild(soundNode)
         self.addChild(pausedNode)
     }
     
@@ -951,9 +1079,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             timerForBosses = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("countBosses"), userInfo: nil, repeats: true)
 
         }
- //       if boolTimerToOver {
- //           timeToOver = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(durationOfExplosion / 10), target: self, selector: Selector("overGame"), userInfo: nil, repeats: false)
- //       }
+     //   if boolTimerToOver {
+     //       timeToOver = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(durationOfExplosion / 10), target: self, selector: Selector("overGame"), userInfo: nil, repeats: false)
+     //   }
         invincibility = wasInvi
         
         if soundIsOn {
@@ -962,17 +1090,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         gamePaused = false
         self.scene?.paused = false
+        numbersNode.speed = 1
+        bossNode.speed = 1
+        explosion.speed = 1
         currentGameState = gameStateBeforePause
         pausedNode.removeFromParent()
+        soundNode.removeFromParent()
+        self.addChild(scoreNode)
         pauseNode.texture = pauseStopTexture
     }
     
     func restartGame() {
    //     unPauseGame()
+        stopFlurryTimers()
         restarting = true
         overGame()
         score = 0
-        scoreNode.text = "0"
+        wasScore = 0
+        scoreNode.text = "Score: 0"
+        resizeScores()
         numOfTouches.text = "0"
         difficultyNow = easyDiff
         self.addChild(groundNode)
@@ -981,10 +1117,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(soundNode)
         self.addChild(pauseNode)
 //        self.addChild(labelsNode)
-        
-        currentReward = 0
-        bossNum = 0
-        sizeForNow = arrayOfSizes[bossNum]
         
         currentHUE = CGFloat(arc4random_uniform(UInt32(100))) / 100
         bgHUE = currentHUE
@@ -1010,6 +1142,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         currentGameState = gameStages.GameGoing
         numbersNode.speed = 1
+        bossNode.speed = 1
+        explosion.speed = 1
         gamePaused = false
         
         self.scene?.paused = false
@@ -1021,12 +1155,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             backGroundMusic.play()
         }
   //      self.requestInterstitialAdPresentation(self)
+        Flurry.logEvent("TimeForFirstLevel", timed: true)
+        Flurry.logEvent("TimeBeforeEnd", timed: true)
+        soundNode.removeFromParent()
+        self.addChild(xTwoNode)
+        resizeScores()
 
     }
     
-    func restartAfterGO() {
-      //  self.addChild(numbersNode)
-      //  self.addChild(soundNode)
-      //  self.addChild(pausedNode)
+    func setUpFlurry() {
+        Flurry.logEvent("TimeBeforeFirstPausePressed", timed: true)
+        Flurry.logEvent("TimeBeforeFirstRestartPressed", timed: true)
+        Flurry.logEvent("TimeBeforeEnd", timed: true)
+        Flurry.logEvent("TimeForFirstLevel", timed: true)
+        Flurry.logEvent("TimeBeforeSoundOffStarted", timed: true)
+    }
+    
+    func stopFlurryTimers() {
+        Flurry.endTimedEvent("TimeForFirstLevel", withParameters: nil)
+        Flurry.endTimedEvent("TimeForSecondLevel", withParameters: nil)
+        Flurry.endTimedEvent("TimeForThirdLevel", withParameters: nil)
+        Flurry.endTimedEvent("TimeBeforeEnd", withParameters: nil)
     }
 }
