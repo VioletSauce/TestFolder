@@ -644,6 +644,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             Flurry.endTimedEvent("TimeForThirdLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForThirdLevel"))
             currentGameState = .GameOver
             Flurry.endTimedEvent("TimeBeforeEnd", withParameters: NSDictionary(object: score, forKey: "TotalScore"))
+            backGroundMusic.stop()
         default:
             return
         }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		901263C61A408555006D767A /* inAppPurchase.plist in Resources */ = {isa = PBXBuildFile; fileRef = 901263C51A408555006D767A /* inAppPurchase.plist */; };
 		90528EAC1A2E3E4B007ED12B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D3ED7F1A27DB7D00FC2CBB /* GameScene.swift */; };
 		90528EAE1A2F0D21007ED12B /* pauseBB.png in Resources */ = {isa = PBXBuildFile; fileRef = 90528EAD1A2F0D21007ED12B /* pauseBB.png */; };
 		90528EB01A2F0D44007ED12B /* PPPP.png in Resources */ = {isa = PBXBuildFile; fileRef = 90528EAF1A2F0D44007ED12B /* PPPP.png */; };
@@ -200,6 +201,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		901263C51A408555006D767A /* inAppPurchase.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = inAppPurchase.plist; sourceTree = "<group>"; };
 		90528EAD1A2F0D21007ED12B /* pauseBB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pauseBB.png; sourceTree = "<group>"; };
 		90528EAF1A2F0D44007ED12B /* PPPP.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PPPP.png; sourceTree = "<group>"; };
 		90D3ED761A27DB7D00FC2CBB /* Nine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nine.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -441,6 +443,7 @@
 			isa = PBXGroup;
 			children = (
 				90D3ED7B1A27DB7D00FC2CBB /* AppDelegate.swift */,
+				901263C51A408555006D767A /* inAppPurchase.plist */,
 				90D3ED7D1A27DB7D00FC2CBB /* GameScene.sks */,
 				90D3ED7F1A27DB7D00FC2CBB /* GameScene.swift */,
 				90DB20741A289DB000920156 /* gameStages.swift */,
@@ -888,6 +891,7 @@
 				90F1F0CA1A3A0C8C0012A2CA /* functions_64.js in Resources */,
 				90F1F0B21A3A0C8C0012A2CA /* all_67.html in Resources */,
 				90F1F0F61A3A0C8C0012A2CA /* Flurry RTB Marketplace TOS.pdf in Resources */,
+				901263C61A408555006D767A /* inAppPurchase.plist in Resources */,
 				90F1F09E1A3A0C8C0012A2CA /* navtree.js in Resources */,
 				90F1F07C1A3A0C8C0012A2CA /* doxygen.css in Resources */,
 				90F1F0E71A3A0C8C0012A2CA /* sync_on.png in Resources */,

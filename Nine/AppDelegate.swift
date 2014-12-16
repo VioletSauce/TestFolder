@@ -8,11 +8,12 @@
 
 import UIKit
 import CoreData
-
+import StoreKit
 //var GameSceneDelegate = GameScene.self
+var products:AnyObject!
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, SKProductsRequestDelegate {
 
     var window: UIWindow?
 
@@ -21,6 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      //   Flurry.startSession("9XK5T52Y5TKHGFNNR8TN")
         // Override point for customization after application launch.
         return true
+    }
+    
+    func removedAds() {
+        let removeAdsRequest:SKProductsRequest = SKProductsRequest(productIdentifiers: NSSet(array: ["com.Nine.blockAds"]))
+        removeAdsRequest.delegate = self
+        removeAdsRequest.start()
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -31,6 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
             gamePaused = true
         }
+    }
+    
+    func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
+        products = response.products
     }
 
     func applicationDidEnterBackground(application: UIApplication) {

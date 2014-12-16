@@ -9,8 +9,9 @@
 import UIKit
 import iAd
 import CoreData
+import StoreKit
 
-class GameOverViewController: UIViewController, ADInterstitialAdDelegate {
+class GameOverViewController: UIViewController, ADBannerViewDelegate, ADInterstitialAdDelegate, SKPaymentTransactionObserver {
 
     var adDidLoad = true
     var loadingAD:Bool = true
@@ -23,24 +24,33 @@ class GameOverViewController: UIViewController, ADInterstitialAdDelegate {
     
     @IBOutlet weak var scoreNowLabel: UILabel!
     @IBOutlet weak var scoreBestLabel: UILabel!
+    @IBOutlet weak var adBannerView: ADBannerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let appDel = UIApplication.sharedApplication().delegate as AppDelegate
         managedContext = appDel.managedObjectContext
 
-//        println("aaa)")
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     override func viewDidAppear(animated: Bool) {
   //      loosingStreak++
+        adBannerView.delegate = self
         let request = NSFetchRequest()
         var entity = NSEntityDescription.entityForName("SavedScores", inManagedObjectContext: managedContext)
         request.entity = entity
         var scores:NSArray = managedContext.executeFetchRequest(request, error: nil)!
-        var highScores:Int = scores[0].valueForKey("highScore") as Int
+        var highScores:Int = 0
+        if scores.count == 0 {
+            var newScores = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+            managedContext.save(nil)
+            scores = managedContext.executeFetchRequest(request, error: nil)!
+
+        }
+        println(scores.count)
+            highScores = scores[0].valueForKey("highScore") as Int
         println(highScores)
         if highScores < score {
             scores[0].setValue(score, forKey: "highScore")
@@ -54,8 +64,6 @@ class GameOverViewController: UIViewController, ADInterstitialAdDelegate {
         scoreNowLabel.text = "\(score)"
         scoreNowLabel.font = UIFont(name: "\(scoreNowLabel.font.fontName)", size: scoreNowLabel.frame.size.height)
         requestInterstitialAdPresentation()
- //           gameOvered = false
-//        }
 
     }
         
@@ -66,9 +74,30 @@ class GameOverViewController: UIViewController, ADInterstitialAdDelegate {
         
     }
     
-    func saveContent(scoreGet:Int) {
-        
+    func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
+  //      var userData:NURL
+        for transaction in transactions {
+            switch(transaction.transactionState!) {
+            case .Purchased:
+//NSUserDefaults.standardUserDefaults().
+                println("perc")
+            case .Restored:
+                println("rest")
+            case .Failed:
+                if transaction.errorStatusCode != SKErrorPaymentCancelled {
+                }
+                println("fail")
+            default:
+                println("other")
+            }
+            SKPaymentQueue.defaultQueue().finishTransaction(transaction as SKPaymentTransaction)
+        }
     }
+    
+    func paymentQueue(queue: SKPaymentQueue!, removedTransactions transactions: [AnyObject]!) {
+    }
+    
+    
     @IBAction func restartGame(sender: UIButton) {
         Flurry.logEvent("GameRestartedAfterGameOver")
         dismissViewControllerAnimated(false, completion: nil)
@@ -83,4 +112,22 @@ class GameOverViewController: UIViewController, ADInterstitialAdDelegate {
         self.presentViewController(activityVC, animated: true, completion: nil)
         Flurry.logEvent("ShareButtonPressed", withParameters: NSDictionary(object: score, forKey: "ScoreWhenShared"))
     }
+ /*   @IBAction func removeAdsButtonPressed(sender: UIButton) {
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        if SKPaymentQueue.canMakePayments() {
+            var removeAdsPayment:SKMutablePayment = SKMutablePayment(product: products[0] as SKProduct)
+            removeAdsPayment.quantity = 1
+            SKPaymentQueue.defaultQueue().addPayment(removeAdsPayment)
+        }
+    } */
+    
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        adBannerView.hidden = false
+ //       println("succeded")
+    }
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        adBannerView.hidden = true
+ //       println("failed")
+    } 
+    
 }

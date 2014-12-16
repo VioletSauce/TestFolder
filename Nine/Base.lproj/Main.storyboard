@@ -159,8 +159,8 @@
                                     </mask>
                                 </variation>
                             </imageView>
-                            <adBannerView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="opq-oU-GBj">
-                                <rect key="frame" x="0.0" y="568" width="480" height="32"/>
+                            <adBannerView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="opq-oU-GBj">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="32"/>
                             </adBannerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -178,6 +178,7 @@
                             <constraint firstItem="eOa-jT-sxn" firstAttribute="height" secondItem="og0-QX-hKj" secondAttribute="height" multiplier="1.1" id="9xy-c3-9PD"/>
                             <constraint firstItem="mTt-a4-1kp" firstAttribute="centerY" secondItem="PVc-L3-ORx" secondAttribute="centerY" id="AAp-yP-sNj"/>
                             <constraint firstItem="eOa-jT-sxn" firstAttribute="centerX" secondItem="og0-QX-hKj" secondAttribute="centerX" id="Ajf-zR-ayJ"/>
+                            <constraint firstItem="opq-oU-GBj" firstAttribute="top" secondItem="mTt-a4-1kp" secondAttribute="bottom" id="BEI-DX-s4E"/>
                             <constraint firstItem="yxv-dc-3md" firstAttribute="width" secondItem="c5A-X7-0WL" secondAttribute="width" id="BEv-hK-c4S"/>
                             <constraint firstItem="eOa-jT-sxn" firstAttribute="centerY" secondItem="og0-QX-hKj" secondAttribute="centerY" id="BUC-WL-jQS"/>
                             <constraint firstItem="7e7-aJ-DGu" firstAttribute="width" secondItem="sup-um-DUK" secondAttribute="width" multiplier="0.2" id="D2X-th-b5G"/>
@@ -228,6 +229,7 @@
                             <constraint firstItem="XsS-Dz-QvM" firstAttribute="width" secondItem="mVi-NA-Soi" secondAttribute="width" id="mOM-Ym-EhA"/>
                             <constraint firstItem="yxv-dc-3md" firstAttribute="bottom" secondItem="ggE-Qk-ENE" secondAttribute="bottom" constant="-5" id="n8O-P1-8Ai"/>
                             <constraint firstItem="sup-um-DUK" firstAttribute="height" secondItem="eOa-jT-sxn" secondAttribute="height" id="nA9-YT-WwH"/>
+                            <constraint firstItem="opq-oU-GBj" firstAttribute="top" secondItem="cny-BK-zji" secondAttribute="top" id="pSa-Jo-2g9"/>
                             <constraint firstItem="eOa-jT-sxn" firstAttribute="top" secondItem="sup-um-DUK" secondAttribute="bottom" constant="20" id="sAH-a5-AzQ"/>
                             <constraint firstItem="PVc-L3-ORx" firstAttribute="leading" secondItem="eOa-jT-sxn" secondAttribute="trailing" id="tke-ow-jd8"/>
                             <constraint firstItem="XsS-Dz-QvM" firstAttribute="leading" secondItem="mVi-NA-Soi" secondAttribute="trailing" constant="8" id="vnU-2g-ec2"/>
@@ -235,6 +237,9 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="BEI-DX-s4E"/>
+                                <exclude reference="QkY-FV-0xY"/>
+                                <exclude reference="hHs-nA-HVO"/>
                                 <exclude reference="8oJ-8s-CVg"/>
                                 <exclude reference="WsD-wF-jWt"/>
                                 <exclude reference="Jkv-Jf-aqd"/>
@@ -243,19 +248,20 @@
                                 <exclude reference="Orf-Wo-f0l"/>
                                 <exclude reference="eiH-ng-dpC"/>
                                 <exclude reference="kjD-KN-YO4"/>
-                                <exclude reference="hHs-nA-HVO"/>
+                                <exclude reference="KGg-7M-akN"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Ik6-Wm-CBR"/>
                     <connections>
+                        <outlet property="adBannerView" destination="opq-oU-GBj" id="ZJe-Ca-Lyf"/>
                         <outlet property="scoreBestLabel" destination="c5A-X7-0WL" id="i9R-XD-PCF"/>
                         <outlet property="scoreNowLabel" destination="XsS-Dz-QvM" id="67L-L7-pME"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="swY-xV-Cd1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1171" y="206"/>
+            <point key="canvasLocation" x="1149" y="318"/>
         </scene>
     </scenes>
     <resources>
