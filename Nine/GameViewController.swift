@@ -27,49 +27,15 @@ extension SKNode {
         }
     }
 }
-    var didLoad:Bool = false
-class GameViewController: UIViewController, ADBannerViewDelegate {
+
+class GameViewController: UIViewController, GADBannerViewDelegate {
     
-    @IBOutlet weak var bannerView: ADBannerView!
+    var didLoad:Bool = false
     var skView:SKView!
     
-
-    
     override func viewDidLoad() {
- //       if !didLoad {
         super.viewDidLoad()
- //       self.canDisplayBannerAds = true
-        self.bannerView.delegate = self
-//        }
     }
-    func bannerViewDidLoadAd(banner: ADBannerView!) {
-        bannerView.hidden = false
-    }
-    
-    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
-        bannerView.hidden = true
-    }
-
-    func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
- //       if currentGameState != gameStages.MainMenu {
-       
-  //      if currentGameState != gameStages.GamePaused {
-  //          gameStateBeforePause = currentGameState
-  //      }
-  //          currentGameState = gameStages.GamePaused
-  //      }
-        NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
- //       wasBanner = false
-        if touchess == 1 {
-            didSucceded = true
-            numOfTouches.text = "0"
-        }
-        return true
-    }
-    func bannerViewActionDidFinish(banner: ADBannerView!) {
- //       currentGameState = gameStateBeforePause
-    }
-    
     override func viewWillLayoutSubviews() {
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
@@ -87,10 +53,6 @@ class GameViewController: UIViewController, ADBannerViewDelegate {
         }
     }
 
- /*   override func shouldAutorotate() -> Bool {
-        return true
-    } */
-
     override func supportedInterfaceOrientations() -> Int {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
@@ -101,7 +63,6 @@ class GameViewController: UIViewController, ADBannerViewDelegate {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
 
     override func prefersStatusBarHidden() -> Bool {
@@ -111,7 +72,32 @@ class GameViewController: UIViewController, ADBannerViewDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         gameOvered = true
         let gameOverVC = segue.destinationViewController as GameOverViewController
-//        dismissViewControllerAnimated(false, completion: nil)
-        gameOverVC.interstitialPresentationPolicy = ADInterstitialPresentationPolicy.Manual
+     //   gameOverVC.transformView()
+        bannerView?.removeFromSuperview()
+    }
+    override func viewDidAppear(animated: Bool) {
+        if adsActive {
+            bannerView?.rootViewController = self
+            bannerView?.delegate = self
+            if bannerView != nil && !isAdsRemoved {
+                var request:GADRequest = GADRequest()
+                request.testDevices = [ GAD_SIMULATOR_ID ]
+                bannerView?.loadRequest(request)
+                self.view.addSubview(bannerView)
+            }
+        }
+    }
+    
+    func adView(view: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
+        bannerView?.hidden = true
+    }
+    func adViewDidReceiveAd(view: GADBannerView!) {
+        bannerView?.hidden = false
+    }
+    func adViewWillPresentScreen(adView: GADBannerView!) {
+        NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
+    }
+    func adViewWillLeaveApplication(adView: GADBannerView!) {
+        NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
     }
 }

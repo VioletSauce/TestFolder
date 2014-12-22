@@ -17,33 +17,6 @@ var currentGameState:gameStages!
 //Ноды для текста
 var labelsNode = SKNode()
 
-//Переменные скорости #leo
-let minSpeed:UInt32 = 10 //Минимальная скрость падения
-let maxSpeed:UInt32 = 20 //Максимальная скорость падения
-var speedModifier:CGFloat = 0 //Не трогать
-
-let maxSpeedforRandomize = maxSpeed - minSpeed //Не трогать
-
-let durationOfExplosion:Int = 30
-
-//Модификаторы размеров цифр #leo
-let sizeOfNumbersConts:CGFloat = 1.5
-
-
-//Всё что связано со шрифтами
-
-//Шрифты для цифр
-
-//Общий модификатор размеров надписей
-let sizeStandartforFonts:CGFloat = 2
-let sizeStandartforNumOfTouches:CGFloat = 1 //#leo насколько большой шрифт у надписи с количеством касаний
-let heightModforNumOfTouches:CGFloat = 1 // #leo как высоко будет надо пальцем цифра
-
-
-
-
-
-
 //#leo размер для цифр
 let fontSizeMin:CGFloat = 60
 let fontSizeMax:CGFloat = 200
@@ -147,6 +120,28 @@ var bossNum:Int = 0
 
 var bossFontSize:CGFloat!
 
+//Переменные скорости #leo
+let minSpeed:UInt32 = 10 //Минимальная скрость падения
+let maxSpeed:UInt32 = 20 //Максимальная скорость падения
+var speedModifier:CGFloat = 0 //Не трогать
+let maxSpeedforRandomize = maxSpeed - minSpeed //Не трогать
+
+let durationOfExplosion:Int = 30
+
+//Модификаторы размеров цифр #leo
+let sizeOfNumbersConts:CGFloat = 1.5
+
+
+//Всё что связано со шрифтами
+
+//Шрифты для цифр
+
+//Общий модификатор размеров надписей
+let sizeStandartforFonts:CGFloat = 2
+let sizeStandartforNumOfTouches:CGFloat = 1 //#leo насколько большой шрифт у надписи с количеством касаний
+let heightModforNumOfTouches:CGFloat = 1 // #leo как высоко будет надо пальцем цифра
+
+
 //Переменные для паузы
 var gameStateBeforePause:gameStages = gameStages.MainMenu
 var boolTimerSpeed:Bool = false
@@ -222,6 +217,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var circleOfXTwo:SKShapeNode!
     
     var xTwo:SKLabelNode!
+
+
 
     
     override func didMoveToView(view: SKView) {
@@ -463,7 +460,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         mediumDiff = DifficultyLevel(bgChangeMod: 0.02, minNumber: 4, satForLevel: 0.56, brForLevel: 0.89, diffNum: 2, speedMod: 1.1, patternNum: 1)
         hardDiff = DifficultyLevel(bgChangeMod: 0.03, minNumber: 7, satForLevel: 0.76, brForLevel: 1, diffNum: 3, speedMod: 0.5, patternNum: 2)
         
-        groundNode.position = CGPointMake(CGRectGetMidX(self.frame), 0)
+        groundNode.position = CGPointMake(CGRectGetMidX(self.frame), -200)
         
         difficultyNow = easyDiff
         
@@ -500,7 +497,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             boolTimerChanging = true
         
         //Нод земли
-        var sizeForGround:CGSize = CGSizeMake(self.frame.size.width, 30)
+        var sizeForGround:CGSize = CGSizeMake(self.frame.size.width, 400)
         groundNode.physicsBody = SKPhysicsBody(rectangleOfSize: sizeForGround)
         groundNode.physicsBody?.dynamic = false
         groundNode.physicsBody?.categoryBitMask = groundCollisionMask

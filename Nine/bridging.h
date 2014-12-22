@@ -9,6 +9,11 @@
 #ifndef Nine_bridging_h
 #define Nine_bridging_h
 
-#import "FlurrySDK/Flurry/Flurry.h"
+#import "Flurry.h"
+#import "Reachability.h"
+#import "GADRequest.h"
+#import "GADBannerView.h"
+#import "GADBannerViewDelegate.h"
+#import "GADInterstitial.h"
 
 #endif

@@ -4,6 +4,38 @@
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nine/AppDelegate.swift"
+            timestampString = "440959653.692862"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "removedAds()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nine/AppDelegate.swift"
+            timestampString = "440959653.692862"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "application(_:didFinishLaunchingWithOptions:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "Yes"
@@ -19,13 +51,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Nine/GameOverViewController.swift"
-            timestampString = "440448367.318512"
+            filePath = "Nine/SKStoreClass.swift"
+            timestampString = "440948401.660869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "viewDidAppear(_:)"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "init(identifiers:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,60 +67,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Nine/GameOverViewController.swift"
-            timestampString = "440448367.318512"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
-            landmarkName = "paymentQueue(_:updatedTransactions:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nine/GameOverViewController.swift"
-            timestampString = "440448316.697976"
+            filePath = "Nine/SKStoreClass.swift"
+            timestampString = "440957710.590872"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "40"
             endingLineNumber = "40"
-            landmarkName = "viewDidAppear(_:)"
+            landmarkName = "paymentQueue(_:updatedTransactions:)"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Nine.GameOverViewController.viewDidAppear (Nine.GameOverViewController)(Swift.Bool) -&gt; ()"
-                  moduleName = "Nine"
-                  urlString = "file:///Users/alexanderpodkopaev/Desktop/Nine/Nine/GameOverViewController.swift"
-                  timestampString = "440448320.301913"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "72">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Nine.GameOverViewController.viewDidAppear (Nine.GameOverViewController)(Swift.Bool) -&gt; ()"
-                  moduleName = "Nine"
-                  urlString = "file:///Users/alexanderpodkopaev/Desktop/Nine/Nine/GameOverViewController.swift"
-                  timestampString = "440448320.599399"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "87">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

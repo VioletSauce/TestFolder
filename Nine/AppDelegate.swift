@@ -8,59 +8,148 @@
 
 import UIKit
 import CoreData
+import GameKit
+import SystemConfiguration
+import Foundation
 import StoreKit
-//var GameSceneDelegate = GameScene.self
-var products:AnyObject!
+
+var gameCenterEnabled:Bool = false
+var lbID:String = "0"
+var GChighScore:Int64 = 0
+
+var SKStoreHandler:SKStoreClass!
+
+var isAdsRemoved:Bool = false
+
+var bannerView:GADBannerView!
+var adsActive:Bool = true
+
+var IAPEncryptionKey:Int = 0
+//var inAppPurchased:NSDictionary!
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, SKProductsRequestDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-     //   Flurry.startSession("9XK5T52Y5TKHGFNNR8TN")
-        // Override point for customization after application launch.
+     //   Flurry.startSession("9XK5T52Y5TKHGFNNR8TN")  
+        if NSUserDefaults.standardUserDefaults().valueForKey("Bundle ID mod") == nil {
+            NSUserDefaults.standardUserDefaults().setObject(0, forKey: "Bundle ID mod")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+        if checkReachability() {
+            SKStoreHandler = SKStoreClass(identifiers: ["AdsFreeNine"])
+            self.authenticatePlayer()
+            removedAds()
+        } else {
+            adsActive = false
+        }
+        println(isAdsRemoved)
         return true
     }
     
     func removedAds() {
-        let removeAdsRequest:SKProductsRequest = SKProductsRequest(productIdentifiers: NSSet(array: ["com.Nine.blockAds"]))
-        removeAdsRequest.delegate = self
-        removeAdsRequest.start()
+        if !isAdsRemoved {
+            createAdBanner()
+            IAPEncryptionKey = createEncryptionKey()
+            if IAPEncryptionKey == NSUserDefaults.standardUserDefaults().valueForKey("Bundle ID mod")! as Int {
+                isAdsRemoved = true
+            } else {
+                isAdsRemoved = false
+            }
+        }
+    }
+    
+    func createAdBanner() {
+   /*     switch (UIDevice.currentDevice().userInterfaceIdiom) {
+        case .Pad:
+            bannerView = GADBannerView(adSize: kGADAdSizeLeaderboard, origin: CGPointMake(0, 0))
+        case .Phone:
+            bannerView = GADBannerView(adSize: kGADAdSizeBanner, origin: CGPointMake(0, 0))
+        default:
+            bannerView = GADBannerView(adSize: kGADAdSizeBanner, origin: CGPointMake(0, 0))
+        } */
+        if bannerView == nil {
+            bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait, origin: CGPointMake(0, 0))
+            bannerView.adUnitID = "ca-app-pub-8371737787665531/5139756806"
+            bannerView.hidden = true
+        }
+    }
+    
+    func createEncryption() -> Int {
+        var encryptionKeyStringArray:[Character] = Array(UIDevice.currentDevice().identifierForVendor.UUIDString)
+        encryptionKeyStringArray = encryptionKeyStringArray.filter { (T) -> Bool in
+            if T == "0" || T == "1" || T == "2" || T == "3" || T == "4" || T == "5" || T == "6" || T == "7" || T == "8" || T == "9" {
+                return true
+            } else {
+                return false
+            }
+        }
+        var encryptionKeyIntArray:[Int] = encryptionKeyStringArray.map { (T:Character) -> Int in
+            let a = String(T)
+            return a.toInt()!
+        }
+        var encryption:Int = 0
+        encryptionKeyIntArray.removeLast()
+        for newNum in encryptionKeyIntArray {
+            encryption += newNum
+        }
+        return encryption
+    }
+    
+    func createEncryptionKey() -> Int {
+        var encryptionKey:Int = createEncryption()
+        encryptionKey *= 54
+        encryptionKey += 4265
+        println(encryptionKey)
+        return encryptionKey
+    }
+    
+    func checkReachability() -> Bool {
+        var reachability:Reachability = Reachability.reachabilityForLocalWiFi()
+        var networkStatus:NetworkStatus = reachability.currentReachabilityStatus()
+        if networkStatus.value != NotReachable.value {
+            return true
+        } else {
+            reachability = Reachability.reachabilityForInternetConnection()
+            networkStatus = reachability.currentReachabilityStatus()
+            if networkStatus.value != NotReachable.value {
+                println("internet")
+                return true
+            } else {
+                println("notReachable")
+                return false
+            }
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
         if currentGameState == gameStages.GameGoing && !gamePaused{
-      //      currentGameState = gameStages.GamePaused
             NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
             gamePaused = true
         }
     }
-    
-    func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
-        products = response.products
-    }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
- //       NSNotificationCenter.defaultCenter().postNotificationName("pauseViewPlease", object: nil)
+        if checkReachability() && !isAdsRemoved{
+            createAdBanner()
+            adsActive = true
+        } else {
+            adsActive = false
+        }
     }
 
     func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+
     }
     
     lazy var applicationDocumetnsDirectory: NSURL = {
@@ -107,6 +196,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SKProductsRequestDelegate
             if moc.hasChanges && !moc.save(&error) {
                 NSLog("Unresolved error \(error), \(error!.userInfo)")
                 abort()
+            }
+        }
+    }
+    func authenticatePlayer() {
+        let localPlayer:GKLocalPlayer = GKLocalPlayer.localPlayer()
+        localPlayer.authenticateHandler = {(viewController:UIViewController!, error:NSError!) -> Void in
+            if localPlayer.authenticated {
+                gameCenterEnabled = true
+                localPlayer.loadDefaultLeaderboardIdentifierWithCompletionHandler({(identifier:String!, error:NSError!) -> Void in
+                    if error != nil {
+                        NSLog("String", error.localizedDescription)
+                    } else {
+                        lbID = identifier
+                        var leaderBoard:GKLeaderboard = GKLeaderboard()
+                        leaderBoard.identifier = lbID
+                        leaderBoard.loadScoresWithCompletionHandler { (scores:[AnyObject]!, error:NSError!) -> Void in
+                            if error != nil {
+                                NSLog("String", error.localizedDescription)
+                            }
+                            if scores != nil {
+                                GChighScore = leaderBoard.localPlayerScore.value as Int64
+                            }
+                        }
+                            
+                    }
+                })
+            } else {
+                gameCenterEnabled = false
             }
         }
     }
