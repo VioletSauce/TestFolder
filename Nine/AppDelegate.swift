@@ -21,7 +21,7 @@ var SKStoreHandler:SKStoreClass!
 
 var isAdsRemoved:Bool = false
 
-var bannerView:GADBannerView!
+var bannerView:BannerViewClass!
 var adsActive:Bool = true
 
 var IAPEncryptionKey:Int = 0
@@ -62,6 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func createAdBanner() {
+        bannerView = BannerViewClass(adID: "ca-app-pub-8371737787665531/5139756806")
    /*     switch (UIDevice.currentDevice().userInterfaceIdiom) {
         case .Pad:
             bannerView = GADBannerView(adSize: kGADAdSizeLeaderboard, origin: CGPointMake(0, 0))
@@ -70,11 +71,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         default:
             bannerView = GADBannerView(adSize: kGADAdSizeBanner, origin: CGPointMake(0, 0))
         } */
-        if bannerView == nil {
+/*        if bannerView == nil {
             bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait, origin: CGPointMake(0, 0))
             bannerView.adUnitID = "ca-app-pub-8371737787665531/5139756806"
             bannerView.hidden = true
-        }
+        } */
     }
     
     func createEncryption() -> Int {
@@ -140,12 +141,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        if checkReachability() && !isAdsRemoved{
-            createAdBanner()
-            adsActive = true
-        } else {
-            adsActive = false
-        }
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -175,6 +170,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             dict[NSUnderlyingErrorKey] = error
             error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
             NSLog("Unresolved error \(error), \(error!.userInfo)")
+            let alert = UIAlertController(title: "\(error!.localizedDescription). Reinstall game please", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+            let alertAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: { (alertAction:UIAlertAction!) -> Void in
+                alert.removeFromParentViewController()
+            })
             abort()
         }
         return coordinator

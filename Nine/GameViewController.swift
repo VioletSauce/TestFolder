@@ -38,7 +38,6 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
     }
     override func viewWillLayoutSubviews() {
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-            // Configure the view.
             if !didLoad {
             skView = self.view as SKView
             skView.showsFPS = true
@@ -53,13 +52,13 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
         }
     }
 
-    override func supportedInterfaceOrientations() -> Int {
+ /*   override func supportedInterfaceOrientations() -> Int {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
         } else {
             return Int(UIInterfaceOrientationMask.All.rawValue)
         }
-    }
+    }*/
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -72,11 +71,12 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         gameOvered = true
         let gameOverVC = segue.destinationViewController as GameOverViewController
+        bannerView?.releaseAd()
      //   gameOverVC.transformView()
-        bannerView?.removeFromSuperview()
+ //       bannerView?.removeFromSuperview()
     }
     override func viewDidAppear(animated: Bool) {
-        if adsActive {
+/*        if adsActive {
             bannerView?.rootViewController = self
             bannerView?.delegate = self
             if bannerView != nil && !isAdsRemoved {
@@ -85,10 +85,12 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
                 bannerView?.loadRequest(request)
                 self.view.addSubview(bannerView)
             }
-        }
+        } */
+        bannerView?.presentInView(self)
+        bannerView?.requestAd()
     }
     
-    func adView(view: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
+ /*   func adView(view: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
         bannerView?.hidden = true
     }
     func adViewDidReceiveAd(view: GADBannerView!) {
@@ -99,5 +101,5 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
     }
     func adViewWillLeaveApplication(adView: GADBannerView!) {
         NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
-    }
+    } */
 }

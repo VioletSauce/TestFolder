@@ -25,10 +25,10 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
         request.start()
 /*        if !haveObserver {
             SKPaymentQueue.defaultQueue().removeTransactionObserver(self)
-
+*/
             SKPaymentQueue.defaultQueue().addTransactionObserver(self)
-            haveObserver = true
-        }*/
+     //       haveObserver = true
+      //  }
     }
     
     func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
@@ -75,6 +75,8 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
                 adsActive = false
             }
         }
+        let timerView = selfDelegate as? GameOverViewController
+        timerView?.timer.invalidate()
     }
     
     func buyProduct(atPosition:Int) {

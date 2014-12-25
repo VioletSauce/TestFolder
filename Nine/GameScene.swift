@@ -204,7 +204,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var groundNode = SKNode()
     
-    var explosion = SKShapeNode(circleOfRadius: 50)
+    var explosion = SKShapeNode()
+    var pathOfExplosion = CGPathCreateMutable()
     
     var scoreNode = SKLabelNode()
     
@@ -456,6 +457,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //bgChangeMod - скорость изменения цвета фона
         //satForLevel = Saturation, brForLevel = B
         //самое главное - speedMod модификатор скорости падения на разных уровнях сложности
+        CGPathAddArc(pathOfExplosion, nil, 0, 0, CGFloat(50 * self.frame.width / 1000 * 3), 0, CGFloat(M_PI * 2), true)
+        CGPathCloseSubpath(pathOfExplosion)
+        explosion.path = pathOfExplosion
+        
         easyDiff = DifficultyLevel(bgChangeMod: 0.01, minNumber: 1, satForLevel: 0.39, brForLevel: 0.77, diffNum: 1, speedMod: 2, patternNum: 0)
         mediumDiff = DifficultyLevel(bgChangeMod: 0.02, minNumber: 4, satForLevel: 0.56, brForLevel: 0.89, diffNum: 2, speedMod: 1.1, patternNum: 1)
         hardDiff = DifficultyLevel(bgChangeMod: 0.03, minNumber: 7, satForLevel: 0.76, brForLevel: 1, diffNum: 3, speedMod: 0.5, patternNum: 2)
@@ -510,7 +515,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
      //   scoreNode.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
         scoreNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
         currentPattern = arrayOfPatterns[0]
-        circleOfXTwo = SKShapeNode(circleOfRadius: scoreNode.frame.size.height / 2)
+        let pathOfXTwo = CGPathCreateMutable()
+        CGPathAddArc(pathOfXTwo, nil, 0, 0, CGFloat(scoreNode.frame.size.height / 2), 0, CGFloat(M_PI * 2), true)
+        CGPathCloseSubpath(pathOfXTwo)
+        circleOfXTwo = SKShapeNode()
+        circleOfXTwo.path = pathOfXTwo
+ //       circleOfXTwo = SKShapeNode(circleOfRadius: scoreNode.frame.size.height / 2)
         circleOfXTwo.fillColor = UIColor.whiteColor()
         circleOfXTwo.strokeColor = SKColor.clearColor()
         circleOfXTwo.zPosition = 60
@@ -699,7 +709,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bgSat = currentSat
             bgBr = currentBr
             bgChanging = difficultyNow.bgChangeMod
-            explosion = SKShapeNode(circleOfRadius: 50 * self.frame.width / 1000 * 3)
+            explosion = SKShapeNode()
+            explosion.path = pathOfExplosion
+       //     explosion = SKShapeNode(circleOfRadius: 50 * self.frame.width / 1000 * 3)
             timerForColoring.invalidate()
             boolTimerColoring = false
             if !preparedForBoss {
@@ -919,7 +931,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         xTwoNode.removeFromParent()
         xTwoNode.alpha = 0
         
-        explosion = SKShapeNode(circleOfRadius: 50 * self.frame.width / 1000 * 3)
+  //      explosion = SKShapeNode(circleOfRadius: 50 * self.frame.width / 1000 * 3)
+        explosion = SKShapeNode()
+        explosion.path = pathOfExplosion
         
         numOfTouches.removeFromParent()
         timeOfTouches = 0

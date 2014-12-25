@@ -15,7 +15,7 @@ import GameKit
 var loosingStreak:Int = 0
 var interstitialAd:GADInterstitial!
 
-class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInterstitialDelegate, SKPaymentTransactionObserver, GKGameCenterControllerDelegate {
+class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInterstitialDelegate, SKPaymentTransactionObserver, GKGameCenterControllerDelegate {
     
     var interAdWasUsed:Bool = false
     
@@ -26,14 +26,16 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
     @IBOutlet weak var scoreBestLabel: UILabel!
     
     @IBOutlet weak var loadingImageView: UIImageView!
+    
     @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
     
-    @IBOutlet weak var rateButtonLabel: UILabel!
     @IBOutlet weak var buyButtonImage: UIImageView!
-    
     @IBOutlet weak var buyButtonOutlet: UIButton!
-    @IBOutlet weak var rateButtonOutlet: UIButton!
+    @IBOutlet weak var rateButtonForColor: UIButton!
     
+    lazy var timer = NSTimer()
+    
+    var color:UIColor!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,17 +44,25 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
         }
         let appDel = UIApplication.sharedApplication().delegate as AppDelegate
         managedContext = appDel.managedObjectContext
+        color = buyButtonOutlet.backgroundColor
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     override func viewDidAppear(animated: Bool) {
+        bannerView?.presentInView(self)
+
         transformView()
         calculateScores()
-        println(loosingStreak)
+        if !checkReachability() {
+            bannerView = nil
+        } else {
+            if bannerView == nil {
+                bannerView = BannerViewClass(adID: "ca-app-pub-8371737787665531/5139756806")
+            }
+        }
         if !isAdsRemoved {
             if loosingStreak >= 2 {
-                println(">=3")
                 if interstitialAd != nil {
                     if interstitialAd.isReady && !interAdWasUsed {
                         interstitialAd.presentFromRootViewController(self)
@@ -65,16 +75,10 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
         if loosingStreak >= 1000000 {
             loosingStreak = 0
         }
-        bannerView?.rootViewController = self
-        bannerView?.delegate = self
-        if bannerView != nil && !isAdsRemoved && adsActive{
-            self.view.addSubview(bannerView)
-        }
-        
+
     }
     
     func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
-        //      var userData:NURL
         for transaction in transactions {
             switch(transaction.transactionState!) {
             case .Purchased:
@@ -99,12 +103,6 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
         gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func adView(view: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
-        bannerView?.hidden = true
-    }
-    func adViewDidReceiveAd(view: GADBannerView!) {
-        bannerView?.hidden = false
-    }
     func interstitialDidDismissScreen(ad: GADInterstitial!) {
         interstitialAd = nil
         interstitialAd = cicleInterstitialAd()
@@ -186,23 +184,18 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
     
     func transformView() {
         if !checkReachability() || isAdsRemoved {
-            buyButtonOutlet.backgroundColor = UIColor.grayColor()
+            buyButtonOutlet.backgroundColor = rateButtonForColor.backgroundColor
             buyButtonOutlet.userInteractionEnabled = false
             adsActive = false
+            interstitialAd = nil
         } else {
             if SKStoreHandler == nil {
                 SKStoreHandler = SKStoreClass(identifiers: ["AdsFreeNine"])
             }
-            buyButtonOutlet.backgroundColor = UIColor.greenColor()
+            buyButtonOutlet.backgroundColor = color
             buyButtonOutlet.userInteractionEnabled = true
             if interstitialAd == nil {
                 interstitialAd = cicleInterstitialAd()
-            }
-            if bannerView == nil {
-                bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait, origin: CGPointMake(0, 0))
-                bannerView.adUnitID = "ca-app-pub-8371737787665531/5139756806"
-                let request = GADRequest()
-                request.testDevices = [GAD_SIMULATOR_ID]
             }
             adsActive = true
         }
@@ -211,6 +204,7 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
     func showLoading() {
         loadingImageView.hidden = false
         loadingActivityIndicator.hidden = false
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("hideLoading"), userInfo: nil, repeats: false)
     }
     
     func hideLoading() {
@@ -229,7 +223,6 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
             if networkStatus.value != NotReachable.value {
                 return true
             } else {
-                println("notReachable")
                 return false
             }
         }
@@ -239,11 +232,9 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
         loosingStreak++
         Flurry.logEvent("GameRestartedAfterGameOver")
         dismissViewControllerAnimated(false, completion: nil)
-        UIViewController.prepareInterstitialAds()
         restarted = true
         interAdWasUsed = false
         notFinishRestarted = true
-        bannerView?.removeFromSuperview()
 
     }
     @IBAction func shareButtonPressed(sender: UIButton) {
@@ -258,7 +249,7 @@ class GameOverViewController: UIViewController, GADBannerViewDelegate, GADInters
             SKStoreHandler?.delegate = self
             SKStoreHandler?.buyProduct(0)
         }
-   //     SKStoreHandler?.buyProduct(0)
+
     }
     @IBAction func showLeaderboard(sender: UIButton) {
         var lbViewController:GKGameCenterViewController = GKGameCenterViewController()
