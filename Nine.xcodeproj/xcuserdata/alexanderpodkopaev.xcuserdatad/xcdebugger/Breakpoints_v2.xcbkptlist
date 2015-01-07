@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nine/AppDelegate.swift"
-            timestampString = "440959653.692862"
+            timestampString = "442244134.338047"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "removedAds()"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nine/AppDelegate.swift"
-            timestampString = "440959653.692862"
+            timestampString = "442244134.338047"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "application(_:didFinishLaunchingWithOptions:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nine/SKStoreClass.swift"
-            timestampString = "440948401.660869"
+            timestampString = "442310042.653714"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
             landmarkName = "init(identifiers:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nine/SKStoreClass.swift"
-            timestampString = "440957710.590872"
+            timestampString = "442311361.814742"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
             landmarkName = "paymentQueue(_:updatedTransactions:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -91,6 +91,22 @@
             endingLineNumber = "12"
             landmarkName = "BannerViewClass"
             landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nine/SKStoreClass.swift"
+            timestampString = "442311361.814742"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "paymentQueue(_:updatedTransactions:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

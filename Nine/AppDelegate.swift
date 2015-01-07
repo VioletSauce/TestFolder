@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSUserDefaults.standardUserDefaults().synchronize()
         }
         if checkReachability() {
+            println("a")
             SKStoreHandler = SKStoreClass(identifiers: ["AdsFreeNine"])
             self.authenticatePlayer()
             removedAds()
@@ -168,12 +169,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
             dict[NSUnderlyingErrorKey] = error
-            error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
+            error = NSError(domain: "APDEL_STORAGE_UNABLE_TO_SAVE", code: 9999, userInfo: dict)
             NSLog("Unresolved error \(error), \(error!.userInfo)")
-            let alert = UIAlertController(title: "\(error!.localizedDescription). Reinstall game please", message: "", preferredStyle: UIAlertControllerStyle.Alert)
-            let alertAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: { (alertAction:UIAlertAction!) -> Void in
-                alert.removeFromParentViewController()
-            })
             abort()
         }
         return coordinator

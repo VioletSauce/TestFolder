@@ -185,6 +185,7 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     func transformView() {
         if !checkReachability() || isAdsRemoved {
             buyButtonOutlet.backgroundColor = rateButtonForColor.backgroundColor
+            buyButtonImage.hidden = true
             buyButtonOutlet.userInteractionEnabled = false
             adsActive = false
             interstitialAd = nil
@@ -193,6 +194,7 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
                 SKStoreHandler = SKStoreClass(identifiers: ["AdsFreeNine"])
             }
             buyButtonOutlet.backgroundColor = color
+            buyButtonImage.hidden = false
             buyButtonOutlet.userInteractionEnabled = true
             if interstitialAd == nil {
                 interstitialAd = cicleInterstitialAd()
@@ -245,10 +247,15 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     }
     @IBAction func removeAdsButtonPressed(sender: UIButton) {
         if checkReachability() {
+            println("1")
+
             showLoading()
             SKStoreHandler?.delegate = self
             SKStoreHandler?.buyProduct(0)
         }
+  //      println("aaa")
+  //      println(alert)
+  //      self.presentViewController(alert, animated: false, completion: nil)
 
     }
     @IBAction func showLeaderboard(sender: UIButton) {

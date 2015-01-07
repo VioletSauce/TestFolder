@@ -16,7 +16,6 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
     var observer:SKPaymentTransactionObserver!
     var productsArray:[SKProduct]!
     var delegate:UIViewController!
-    var haveObserver:Bool = false
     
     init(identifiers:[String]){
         super.init()
@@ -26,17 +25,17 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
 /*        if !haveObserver {
             SKPaymentQueue.defaultQueue().removeTransactionObserver(self)
 */
-            SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
      //       haveObserver = true
       //  }
     }
     
     func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
+        println("aa")
         productsArray = response.products as [SKProduct]
     }
     
     func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
-        let selfDelegate = delegate as UIViewController
         for transaction in transactions {
             if checkReachability() {
                 switch transaction.transactionState! {
@@ -46,12 +45,17 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
                     NSUserDefaults.standardUserDefaults().setValue(IAPEncryptionKey, forKey: "Bundle ID mod")
                 case .Failed:
                     if transaction.error != nil {
-                        let alert = UIAlertController(title: "An error has occured ", message: "Could not complete transaction (\(transaction.error!!.localizedDescription))", preferredStyle: UIAlertControllerStyle.Alert)
-                        let alertAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: { (action:UIAlertAction!) -> Void in
-                        alert.removeFromParentViewController()
-                        })
-                        alert.addAction(alertAction)
-                        delegate.presentViewController(alert, animated: false, completion: nil)
+                        if objc_getClass("UIAlertController") != nil {
+                            let alert = UIAlertController(title: "\(transaction.error!!.localizedDescription)", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                            let alertAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: { (action:UIAlertAction!) -> Void in
+                                alert.removeFromParentViewController()
+                            })
+                            alert.addAction(alertAction)
+                            delegate.presentViewController(alert, animated: false, completion: nil)
+                        } else {
+                            let alert = UIAlertView(title: "\(transaction.error!!.localizedDescription)", message: nil, delegate: delegate, cancelButtonTitle: "Dismiss")
+                            alert.show()
+                        }
                     }
                 case .Purchasing:
                     println("purchasing")
@@ -67,24 +71,28 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
             }
             if transaction.transactionState! == .Purchased || transaction.transactionState! == .Failed || transaction.transactionState! == .Restored{
                 queue.finishTransaction(transaction as SKPaymentTransaction)
-                let selfGODelegate = selfDelegate as GameOverViewController
-                selfGODelegate.hideLoading()
+                let selfGODelegate = delegate as? GameOverViewController
+                selfGODelegate?.hideLoading()
             }
             if transaction.transactionState! == .Purchased || transaction.transactionState! == .Restored {
                 isAdsRemoved = true
                 adsActive = false
             }
         }
-        let timerView = selfDelegate as? GameOverViewController
+        let timerView = delegate as? GameOverViewController
         timerView?.timer.invalidate()
     }
     
     func buyProduct(atPosition:Int) {
+        println(productsArray)
         if productsArray != nil {
+            println("1")
             if SKPaymentQueue.canMakePayments() {
+                println("2")
+
                 SKPaymentQueue.defaultQueue().addTransactionObserver(self)
                 var selfDelegate = delegate as GameOverViewController
-                selfDelegate.showLoading()
+     //           selfDelegate.showLoading()
                 SKPaymentQueue.defaultQueue().addPayment(SKMutablePayment(product: productsArray[atPosition]))
             }
         }

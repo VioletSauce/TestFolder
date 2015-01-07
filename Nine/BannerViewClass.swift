@@ -35,13 +35,9 @@ class BannerViewClass:NSObject, GADBannerViewDelegate {
     }
     
     func presentInView(viewController:UIViewController) {
-        println("1")
         bannerView.removeFromSuperview()
-                println("2")
         bannerView.rootViewController = viewController
-                println("3")
         viewController.view.addSubview(bannerView)
-                println("4")
     }
     
     func releaseAd() {
