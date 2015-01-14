@@ -31,24 +31,34 @@ class BannerViewClass:NSObject, GADBannerViewDelegate {
     }
     
     func requestAd() {
-        bannerView.loadRequest(request)
+        if !isAdsRemoved && adsActive {
+            bannerView.loadRequest(request)
+        }
     }
     
     func presentInView(viewController:UIViewController) {
-        bannerView.removeFromSuperview()
-        bannerView.rootViewController = viewController
-        viewController.view.addSubview(bannerView)
+        if !isAdsRemoved && adsActive {
+            bannerView.removeFromSuperview()
+            bannerView.rootViewController = viewController
+            viewController.view.addSubview(bannerView)
+        }
     }
     
     func releaseAd() {
-        bannerView.removeFromSuperview()
+        if !isAdsRemoved && adsActive {
+            bannerView.removeFromSuperview()
+        }
     }
     
     func adView(view: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
-        bannerView.hidden = true
+        if !isAdsRemoved && adsActive {
+            bannerView.hidden = true
+        }
     }
     func adViewDidReceiveAd(view: GADBannerView!) {
-        bannerView.hidden = false
+        if !isAdsRemoved && adsActive {
+            bannerView.hidden = false
+        }
     }
     
     func adViewWillPresentScreen(adView: GADBannerView!) {

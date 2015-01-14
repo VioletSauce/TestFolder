@@ -25,7 +25,6 @@ var bannerView:BannerViewClass!
 var adsActive:Bool = true
 
 var IAPEncryptionKey:Int = 0
-//var inAppPurchased:NSDictionary!
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -46,24 +45,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             adsActive = false
         }
-        println(isAdsRemoved)
+        bannerView = BannerViewClass(adID: "ca-app-pub-8371737787665531/5139756806")
         return true
     }
     
     func removedAds() {
         if !isAdsRemoved {
-            createAdBanner()
             IAPEncryptionKey = createEncryptionKey()
             if IAPEncryptionKey == NSUserDefaults.standardUserDefaults().valueForKey("Bundle ID mod")! as Int {
                 isAdsRemoved = true
             } else {
-                isAdsRemoved = false
+                adsActive = true
             }
         }
     }
     
     func createAdBanner() {
-        bannerView = BannerViewClass(adID: "ca-app-pub-8371737787665531/5139756806")
    /*     switch (UIDevice.currentDevice().userInterfaceIdiom) {
         case .Pad:
             bannerView = GADBannerView(adSize: kGADAdSizeLeaderboard, origin: CGPointMake(0, 0))

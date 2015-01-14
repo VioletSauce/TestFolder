@@ -88,8 +88,6 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
         if productsArray != nil {
             println("1")
             if SKPaymentQueue.canMakePayments() {
-                println("2")
-
                 SKPaymentQueue.defaultQueue().addTransactionObserver(self)
                 var selfDelegate = delegate as GameOverViewController
      //           selfDelegate.showLoading()

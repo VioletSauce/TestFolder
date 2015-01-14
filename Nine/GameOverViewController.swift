@@ -38,6 +38,7 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     var color:UIColor!
     
     override func viewDidLoad() {
+        if !interAdWasUsed {
         super.viewDidLoad()
         if adsActive && !isAdsRemoved{
             interstitialAd = cicleInterstitialAd()
@@ -45,37 +46,30 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
         let appDel = UIApplication.sharedApplication().delegate as AppDelegate
         managedContext = appDel.managedObjectContext
         color = buyButtonOutlet.backgroundColor
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     override func viewDidAppear(animated: Bool) {
+        if !interAdWasUsed {
         bannerView?.presentInView(self)
 
         transformView()
         calculateScores()
-        if !checkReachability() {
-            bannerView = nil
-        } else {
-            if bannerView == nil {
-                bannerView = BannerViewClass(adID: "ca-app-pub-8371737787665531/5139756806")
-            }
-        }
         if !isAdsRemoved {
             if loosingStreak >= 2 {
-                if interstitialAd != nil {
                     if interstitialAd.isReady && !interAdWasUsed {
-                        interstitialAd.presentFromRootViewController(self)
                         interAdWasUsed = true
                         loosingStreak = 0
+                        interstitialAd.presentFromRootViewController(self)
                     }
                 }
             }
-        }
         if loosingStreak >= 1000000 {
             loosingStreak = 0
         }
-
+        }
     }
     
     func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
@@ -196,10 +190,11 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
             buyButtonOutlet.backgroundColor = color
             buyButtonImage.hidden = false
             buyButtonOutlet.userInteractionEnabled = true
-            if interstitialAd == nil {
+            adsActive = true
+            if interstitialAd == nil
+            {
                 interstitialAd = cicleInterstitialAd()
             }
-            adsActive = true
         }
     }
     
@@ -247,8 +242,6 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     }
     @IBAction func removeAdsButtonPressed(sender: UIButton) {
         if checkReachability() {
-            println("1")
-
             showLoading()
             SKStoreHandler?.delegate = self
             SKStoreHandler?.buyProduct(0)
