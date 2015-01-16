@@ -31,11 +31,10 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     
     @IBOutlet weak var buyButtonImage: UIImageView!
     @IBOutlet weak var buyButtonOutlet: UIButton!
-    @IBOutlet weak var rateButtonForColor: UIButton!
     
+    @IBOutlet weak var rateBigButton: UIButton!
+    @IBOutlet weak var rateBigLabel: UILabel!
     lazy var timer = NSTimer()
-    
-    var color:UIColor!
     
     override func viewDidLoad() {
         if !interAdWasUsed {
@@ -45,8 +44,8 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
         }
         let appDel = UIApplication.sharedApplication().delegate as AppDelegate
         managedContext = appDel.managedObjectContext
-        color = buyButtonOutlet.backgroundColor
         }
+
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -178,23 +177,27 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     
     func transformView() {
         if !checkReachability() || isAdsRemoved {
-            buyButtonOutlet.backgroundColor = rateButtonForColor.backgroundColor
-            buyButtonImage.hidden = true
             buyButtonOutlet.userInteractionEnabled = false
+            rateBigButton.userInteractionEnabled = true
+            rateBigButton.hidden = false
+            rateBigLabel.hidden = false
+            buyButtonOutlet.hidden = true
             adsActive = false
             interstitialAd = nil
         } else {
             if SKStoreHandler == nil {
                 SKStoreHandler = SKStoreClass(identifiers: ["AdsFreeNine"])
             }
-            buyButtonOutlet.backgroundColor = color
-            buyButtonImage.hidden = false
-            buyButtonOutlet.userInteractionEnabled = true
             adsActive = true
             if interstitialAd == nil
             {
                 interstitialAd = cicleInterstitialAd()
             }
+            buyButtonOutlet.hidden = false
+            buyButtonOutlet.userInteractionEnabled = true
+            rateBigButton.hidden = true
+            rateBigButton.userInteractionEnabled = false
+            rateBigLabel.hidden = true
         }
     }
     
@@ -223,6 +226,13 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
                 return false
             }
         }
+    }
+    @IBAction func rateButtonPressed(sender: UIButton) {
+        println("RATE")
+    }
+    
+    @IBAction func bigRateButtonPressed(sender: UIButton) {
+        println("RATE2")
     }
     
     @IBAction func restartGame(sender: UIButton) {

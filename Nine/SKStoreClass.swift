@@ -41,7 +41,6 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
                 switch transaction.transactionState! {
 
                 case .Purchased:
-                    println("Purchased")
                     NSUserDefaults.standardUserDefaults().setValue(IAPEncryptionKey, forKey: "Bundle ID mod")
                 case .Failed:
                     if transaction.error != nil {
@@ -57,13 +56,8 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
                             alert.show()
                         }
                     }
-                case .Purchasing:
-                    println("purchasing")
                 case .Restored:
                     NSUserDefaults.standardUserDefaults().setValue(IAPEncryptionKey, forKey: "Bundle ID mod")
-                    println("restored")
-                case .Deferred:
-                    println("deferred")
 
                 default:
                     println("Something wrong")
@@ -71,6 +65,7 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
             }
             if transaction.transactionState! == .Purchased || transaction.transactionState! == .Failed || transaction.transactionState! == .Restored{
                 queue.finishTransaction(transaction as SKPaymentTransaction)
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction as SKPaymentTransaction)
                 let selfGODelegate = delegate as? GameOverViewController
                 selfGODelegate?.hideLoading()
             }

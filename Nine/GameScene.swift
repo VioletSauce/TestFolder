@@ -320,7 +320,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             soundNode.removeFromParent()
             currentPattern = arrayOfPatterns[Int(arc4random_uniform(UInt32(arrayOfPatterns.count)))]
             nextBoss = Int(arc4random_uniform(UInt32(timeBossForRandom))) + minTime
-            backGroundMusic.play()
+            if soundIsOn {
+                backGroundMusic.play()
+            }
             self.scene?.paused = false
             setUpFlurry()
        case .GameGoing:
