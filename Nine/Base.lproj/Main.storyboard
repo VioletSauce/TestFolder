@@ -79,8 +79,8 @@
                                     <action selector="shareButtonPressed:" destination="U8q-ht-uKy" eventType="touchUpInside" id="fMw-jj-i8a"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gM8-mP-XDu">
-                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gM8-mP-XDu">
+                                <rect key="frame" x="0.0" y="172" width="600" height="72"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -204,6 +204,7 @@
                             <constraint firstItem="PVc-L3-ORx" firstAttribute="top" secondItem="sup-um-DUK" secondAttribute="bottom" constant="20" id="2yk-ft-Tpq"/>
                             <constraint firstItem="yxv-dc-3md" firstAttribute="height" secondItem="ggE-Qk-ENE" secondAttribute="height" multiplier="0.3" id="3QZ-o7-vWi"/>
                             <constraint firstItem="c5A-X7-0WL" firstAttribute="bottom" secondItem="yxv-dc-3md" secondAttribute="bottom" id="3Tq-bc-kem"/>
+                            <constraint firstItem="gM8-mP-XDu" firstAttribute="height" secondItem="ggE-Qk-ENE" secondAttribute="height" id="5D9-N9-v1W"/>
                             <constraint firstAttribute="trailing" secondItem="Dtf-QS-R7X" secondAttribute="trailing" id="6FF-QY-ueY"/>
                             <constraint firstItem="Dtf-QS-R7X" firstAttribute="height" secondItem="hl7-aK-QJr" secondAttribute="height" multiplier="1.1" id="6sC-OG-weT"/>
                             <constraint firstItem="sup-um-DUK" firstAttribute="height" secondItem="Dtf-QS-R7X" secondAttribute="height" id="72u-ne-kxm"/>
@@ -231,6 +232,8 @@
                             <constraint firstItem="PVc-L3-ORx" firstAttribute="width" secondItem="eOa-jT-sxn" secondAttribute="width" id="Ogs-Im-njy"/>
                             <constraint firstItem="sup-um-DUK" firstAttribute="height" secondItem="PVc-L3-ORx" secondAttribute="height" id="P9h-G5-n8n"/>
                             <constraint firstItem="mVi-NA-Soi" firstAttribute="height" secondItem="yxv-dc-3md" secondAttribute="height" id="Pdr-lc-7x3"/>
+                            <constraint firstItem="gM8-mP-XDu" firstAttribute="width" secondItem="ggE-Qk-ENE" secondAttribute="width" id="QPz-ra-Cmk"/>
+                            <constraint firstItem="gM8-mP-XDu" firstAttribute="centerX" secondItem="ggE-Qk-ENE" secondAttribute="centerX" id="R9U-1Q-P1i"/>
                             <constraint firstAttribute="trailing" secondItem="ggE-Qk-ENE" secondAttribute="trailing" id="RGX-jk-HzE"/>
                             <constraint firstItem="og0-QX-hKj" firstAttribute="centerY" secondItem="eOa-jT-sxn" secondAttribute="centerY" id="RbJ-17-4vc"/>
                             <constraint firstAttribute="trailing" secondItem="sup-um-DUK" secondAttribute="trailing" id="Rn9-pC-njQ"/>
@@ -263,6 +266,7 @@
                             <constraint firstItem="c5A-X7-0WL" firstAttribute="leading" secondItem="yxv-dc-3md" secondAttribute="trailing" constant="8" id="jId-Gi-GLd"/>
                             <constraint firstAttribute="trailing" secondItem="PVc-L3-ORx" secondAttribute="trailing" id="lC2-Dh-qfe"/>
                             <constraint firstAttribute="centerX" secondItem="mIm-4G-BdX" secondAttribute="centerX" id="lXD-qt-gdq"/>
+                            <constraint firstItem="gM8-mP-XDu" firstAttribute="centerY" secondItem="ggE-Qk-ENE" secondAttribute="centerY" id="lqb-Nh-YKy"/>
                             <constraint firstItem="ggE-Qk-ENE" firstAttribute="leading" secondItem="mVi-NA-Soi" secondAttribute="trailing" constant="-300" id="qMb-hJ-x44"/>
                             <constraint firstAttribute="centerX" secondItem="1t7-XF-UFX" secondAttribute="centerX" id="qp5-Px-boQ"/>
                             <constraint firstItem="mTt-a4-1kp" firstAttribute="height" secondItem="PVc-L3-ORx" secondAttribute="height" id="qwt-MA-xQw"/>
