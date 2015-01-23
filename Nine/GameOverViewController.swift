@@ -53,7 +53,7 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     override func viewDidAppear(animated: Bool) {
         if !interAdWasUsed {
         bannerView?.presentInView(self)
-
+        gameCenterHandler.delegate = self
         transformView()
         calculateScores()
         if !isAdsRemoved {
@@ -116,11 +116,11 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     }
     
     func calculateScores() {
-        if !GKLocalPlayer.localPlayer().authenticated {
+      /*  if !GKLocalPlayer.localPlayer().authenticated {
             gameCenterEnabled = false
         } else if !gameCenterEnabled{
             gameCenterEnabled = true
-        }
+        } */
         var GCScore:Int64!
         var GKScoreObj:GKScore!
         if gameCenterEnabled {
@@ -262,10 +262,15 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
 
     }
     @IBAction func showLeaderboard(sender: UIButton) {
+  //      gameCenterHandler.noMore = false
+        if !gameCenterEnabled {
+            gameCenterHandler.authenticatePlayer()
+        } else {
         var lbViewController:GKGameCenterViewController = GKGameCenterViewController()
         lbViewController.gameCenterDelegate = self
         lbViewController.viewState = GKGameCenterViewControllerState.Leaderboards
         lbViewController.leaderboardIdentifier = lbID
         self.presentViewController(lbViewController, animated: true, completion: nil)
+        }
     }
 }

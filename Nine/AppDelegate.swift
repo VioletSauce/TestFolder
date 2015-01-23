@@ -18,6 +18,7 @@ var lbID:String = "0"
 var GChighScore:Int64 = 0
 
 var SKStoreHandler:SKStoreClass!
+var gameCenterHandler:gameCenter!
 
 var isAdsRemoved:Bool = false
 
@@ -40,12 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if checkReachability() {
             println("a")
             SKStoreHandler = SKStoreClass(identifiers: ["AdsFreeNine"])
-            self.authenticatePlayer()
+     //       self.authenticatePlayer()
             removedAds()
         } else {
             adsActive = false
         }
         bannerView = BannerViewClass(adID: "ca-app-pub-8371737787665531/5139756806")
+        gameCenterHandler = gameCenter()
         return true
     }
     
@@ -128,6 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
             gamePaused = true
         }
+        gameCenterEnabled = false
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
@@ -192,33 +195,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    func authenticatePlayer() {
-        let localPlayer:GKLocalPlayer = GKLocalPlayer.localPlayer()
-        localPlayer.authenticateHandler = {(viewController:UIViewController!, error:NSError!) -> Void in
-            if localPlayer.authenticated {
-                gameCenterEnabled = true
-                localPlayer.loadDefaultLeaderboardIdentifierWithCompletionHandler({(identifier:String!, error:NSError!) -> Void in
-                    if error != nil {
-                        NSLog("String", error.localizedDescription)
-                    } else {
-                        lbID = identifier
-                        var leaderBoard:GKLeaderboard = GKLeaderboard()
-                        leaderBoard.identifier = lbID
-                        leaderBoard.loadScoresWithCompletionHandler { (scores:[AnyObject]!, error:NSError!) -> Void in
-                            if error != nil {
-                                NSLog("String", error.localizedDescription)
-                            }
-                            if scores != nil {
-                                GChighScore = leaderBoard.localPlayerScore.value as Int64
-                            }
-                        }
-                            
-                    }
-                })
-            } else {
-                gameCenterEnabled = false
-            }
-        }
-    }
-}
+  }
 

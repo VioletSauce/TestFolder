@@ -35,6 +35,8 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        gameCenterHandler.delegate = self
+        gameCenterHandler.authenticatePlayer()
     }
     override func viewWillLayoutSubviews() {
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
@@ -86,6 +88,7 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
                 self.view.addSubview(bannerView)
             }
         } */
+        gameCenterHandler.delegate = self
         bannerView?.presentInView(self)
         bannerView?.requestAd()
     }
