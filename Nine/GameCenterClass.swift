@@ -21,14 +21,13 @@ class gameCenter {
         authenticatePlayer()
     }
     func authenticatePlayer() {
-        println("wwda")
         localPlayer.authenticateHandler = {(uiVC:UIViewController!, error:NSError!) -> Void in
-            println(uiVC)
             if uiVC != nil && !self.noMore {
                 self.delegate.presentViewController(uiVC, animated: true, completion: nil)
             } else if self.localPlayer.authenticated {
                 gameCenterEnabled = true
                 if self.localPlayer.playerID != self.wasID {
+                    self.localPlayer = GKLocalPlayer.localPlayer()
                     self.loadLB()
                 }
             } else {
