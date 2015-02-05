@@ -48,7 +48,11 @@ class gameCenter {
                         NSLog("String", error.localizedDescription)
                     }
                     if scores != nil {
-                        GChighScore = self.leaderBoard.localPlayerScore.value as Int64
+                        if self.leaderBoard.localPlayerScore != nil {
+                            GChighScore = self.leaderBoard.localPlayerScore.value as Int64
+                        } else {
+                            GChighScore = 0
+                        }
                     }
                 }
                 
