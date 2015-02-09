@@ -101,26 +101,7 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
         interstitialAd = cicleInterstitialAd()
     }
     
-    
-    func loadScores(){
-        var leaderBoard:GKLeaderboard = GKLeaderboard()
-        leaderBoard.identifier = lbID
-        leaderBoard.loadScoresWithCompletionHandler { (scores:[AnyObject]!, error:NSError!) -> Void in
-            if error != nil {
-                NSLog("String", error.localizedDescription)
-            }
-            if scores != nil {
-                GChighScore = leaderBoard.localPlayerScore.value as Int64
-            }
-        }
-    }
-    
     func calculateScores() {
-      /*  if !GKLocalPlayer.localPlayer().authenticated {
-            gameCenterEnabled = false
-        } else if !gameCenterEnabled{
-            gameCenterEnabled = true
-        } */
         var GCScore:Int64!
         var GKScoreObj:GKScore!
         if gameCenterEnabled {
@@ -145,14 +126,18 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
         }
         highScores = scores[0].valueForKey("highScore") as Int
         if gameCenterEnabled {
-            if highScores > Int(GCScore) {
+            if highScores > score {
                 GKScoreObj.value = Int64(highScores)
+            } else {
+                GKScoreObj.value = Int64(score)
+            }
+                println("scores reported")
                 GKScore.reportScores([GKScoreObj], withCompletionHandler: { (error:NSError!) -> Void in
                     if error != nil {
                         NSLog("String", error.localizedDescription)
                     }
                 })
-            }
+    //        }
         }
         highScores = scores[0].valueForKey("highScore") as Int
         managedContext.save(nil)
@@ -160,9 +145,6 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
         scoreBestLabel.font = UIFont(name: "\(scoreBestLabel.font.fontName)", size: scoreBestLabel.frame.size.height)
         scoreNowLabel.text = "\(score)"
         scoreNowLabel.font = UIFont(name: "\(scoreNowLabel.font.fontName)", size: scoreNowLabel.frame.size.height)
-        if gameCenterEnabled {
-            loadScores()
-        }
     }
     
     func cicleInterstitialAd() -> GADInterstitial{
