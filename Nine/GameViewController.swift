@@ -42,8 +42,6 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             if !didLoad {
             skView = self.view as SKView
-            skView.showsFPS = true
-            skView.showsNodeCount = true
             skView.ignoresSiblingOrder = true
             scene.size = skView.bounds.size
             scene.scaleMode = .AspectFill
@@ -78,31 +76,8 @@ class GameViewController: UIViewController, GADBannerViewDelegate {
  //       bannerView?.removeFromSuperview()
     }
     override func viewDidAppear(animated: Bool) {
-/*        if adsActive {
-            bannerView?.rootViewController = self
-            bannerView?.delegate = self
-            if bannerView != nil && !isAdsRemoved {
-                var request:GADRequest = GADRequest()
-                request.testDevices = [ GAD_SIMULATOR_ID ]
-                bannerView?.loadRequest(request)
-                self.view.addSubview(bannerView)
-            }
-        } */
         gameCenterHandler.delegate = self
         bannerView?.presentInView(self)
         bannerView?.requestAd()
     }
-    
- /*   func adView(view: GADBannerView!, didFailToReceiveAdWithError error: GADRequestError!) {
-        bannerView?.hidden = true
-    }
-    func adViewDidReceiveAd(view: GADBannerView!) {
-        bannerView?.hidden = false
-    }
-    func adViewWillPresentScreen(adView: GADBannerView!) {
-        NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
-    }
-    func adViewWillLeaveApplication(adView: GADBannerView!) {
-        NSNotificationCenter.defaultCenter().postNotificationName("pauseGamePlease", object: nil)
-    } */
 }

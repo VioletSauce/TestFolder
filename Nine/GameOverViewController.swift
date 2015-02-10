@@ -15,7 +15,7 @@ import GameKit
 var loosingStreak:Int = 0
 var interstitialAd:GADInterstitial!
 
-class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInterstitialDelegate, SKPaymentTransactionObserver, GKGameCenterControllerDelegate {
+class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPaymentTransactionObserver, GKGameCenterControllerDelegate {
     
     var interAdWasUsed:Bool = false
     
@@ -220,7 +220,7 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     @IBAction func restartGame(sender: UIButton) {
         loosingStreak++
         Flurry.logEvent("GameRestartedAfterGameOver")
-        dismissViewControllerAnimated(false, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
         restarted = true
         interAdWasUsed = false
         notFinishRestarted = true
@@ -245,14 +245,11 @@ class GameOverViewController: UIViewController/* GADBannerViewDelegate*/, GADInt
     }
     @IBAction func showLeaderboard(sender: UIButton) {
   //      gameCenterHandler.noMore = false
-        if !gameCenterEnabled {
-            gameCenterHandler.authenticatePlayer()
-        } else {
+        println("lbshowd")
         var lbViewController:GKGameCenterViewController = GKGameCenterViewController()
         lbViewController.gameCenterDelegate = self
         lbViewController.viewState = GKGameCenterViewControllerState.Leaderboards
         lbViewController.leaderboardIdentifier = lbID
         self.presentViewController(lbViewController, animated: true, completion: nil)
-        }
     }
 }
