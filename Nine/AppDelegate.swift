@@ -62,22 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func createAdBanner() {
-   /*     switch (UIDevice.currentDevice().userInterfaceIdiom) {
-        case .Pad:
-            bannerView = GADBannerView(adSize: kGADAdSizeLeaderboard, origin: CGPointMake(0, 0))
-        case .Phone:
-            bannerView = GADBannerView(adSize: kGADAdSizeBanner, origin: CGPointMake(0, 0))
-        default:
-            bannerView = GADBannerView(adSize: kGADAdSizeBanner, origin: CGPointMake(0, 0))
-        } */
-/*        if bannerView == nil {
-            bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait, origin: CGPointMake(0, 0))
-            bannerView.adUnitID = "ca-app-pub-8371737787665531/5139756806"
-            bannerView.hidden = true
-        } */
-    }
-    
     func createEncryption() -> Int {
         var encryptionKeyStringArray:[Character] = Array(UIDevice.currentDevice().identifierForVendor.UUIDString)
         encryptionKeyStringArray = encryptionKeyStringArray.filter { (T) -> Bool in

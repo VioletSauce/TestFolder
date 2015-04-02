@@ -8,6 +8,7 @@
 
 import Foundation
 import iAd
+import GoogleMobileAds
 
 class BannerViewClass:NSObject, GADBannerViewDelegate {
  
@@ -23,7 +24,7 @@ class BannerViewClass:NSObject, GADBannerViewDelegate {
         bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait, origin: CGPointMake(0, 0))
         bannerView.adUnitID = adID
         request = GADRequest()
-        request.testDevices = [GAD_SIMULATOR_ID]
+        request.testDevices = NSArray(objects: adID)
    //     bannerView.loadRequest(request)
         bannerView.delegate = self
         bannerView.hidden = true

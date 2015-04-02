@@ -11,7 +11,7 @@ import iAd
 import CoreData
 import StoreKit
 import GameKit
-
+import GoogleMobileAds
 var loosingStreak:Int = 0
 var interstitialAd:GADInterstitial!
 
@@ -71,6 +71,10 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
         }
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
     func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
         for transaction in transactions {
             switch(transaction.transactionState!) {
@@ -99,6 +103,9 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
     func interstitialDidDismissScreen(ad: GADInterstitial!) {
         interstitialAd = nil
         interstitialAd = cicleInterstitialAd()
+    }
+    func interstitial(ad: GADInterstitial!, didFailToReceiveAdWithError error: GADRequestError!) {
+        interstitialAd = nil
     }
     
     func calculateScores() {
@@ -152,7 +159,7 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
         newInterAd.delegate = self
         newInterAd.adUnitID = "ca-app-pub-8371737787665531/5139756806"
         let request:GADRequest = GADRequest()
-        request.testDevices = [GAD_SIMULATOR_ID]
+        request.testDevices = NSArray(objects: "ca-app-pub-8371737787665531/5139756806")
         newInterAd.loadRequest(request)
         return newInterAd
     }
@@ -182,6 +189,7 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
             rateBigLabel.hidden = true
         }
     }
+
     
     func showLoading() {
         loadingImageView.hidden = false

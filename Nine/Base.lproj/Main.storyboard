@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -36,7 +36,7 @@
         <!--Game Over View Controller-->
         <scene sceneID="zHf-Y6-nE1">
             <objects>
-                <viewController id="U8q-ht-uKy" customClass="GameOverViewController" customModule="Nine" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="overFullScreen" id="U8q-ht-uKy" customClass="GameOverViewController" customModule="Nine" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="W96-rP-0Sh"/>
                         <viewControllerLayoutGuide type="bottom" id="XIj-Yc-BFt"/>
@@ -111,8 +111,8 @@
                                     <action selector="showLeaderboard:" destination="U8q-ht-uKy" eventType="touchUpInside" id="l28-W6-Ch3"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score:" textAlignment="right" lineBreakMode="clip" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="mVi-NA-Soi">
-                                <rect key="frame" x="180" y="158" width="120" height="28"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SCORE:" textAlignment="right" lineBreakMode="clip" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="mVi-NA-Soi">
+                                <rect key="frame" x="150" y="158" width="150" height="28"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="100"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -148,7 +148,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playButton.png" translatesAutoresizingMaskIntoConstraints="NO" id="hl7-aK-QJr">
-                                <rect key="frame" x="237" y="261" width="126" height="78"/>
+                                <rect key="frame" x="237" y="270" width="126" height="61"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bUyButton.png" translatesAutoresizingMaskIntoConstraints="NO" id="og0-QX-hKj">
                                 <rect key="frame" x="78" y="472" width="144" height="77"/>
@@ -188,7 +188,7 @@
                             <constraint firstItem="PVc-L3-ORx" firstAttribute="top" secondItem="sup-um-DUK" secondAttribute="bottom" constant="20" id="3O3-cT-dNI"/>
                             <constraint firstItem="mVi-NA-Soi" firstAttribute="height" secondItem="ggE-Qk-ENE" secondAttribute="height" multiplier="1/3" id="3Qz-OT-jMF"/>
                             <constraint firstItem="Dtf-QS-R7X" firstAttribute="height" secondItem="ggE-Qk-ENE" secondAttribute="height" id="3df-vq-Ybx"/>
-                            <constraint firstItem="mVi-NA-Soi" firstAttribute="width" secondItem="ggE-Qk-ENE" secondAttribute="width" multiplier="1/5" id="5Dp-WU-TFw"/>
+                            <constraint firstItem="mVi-NA-Soi" firstAttribute="width" secondItem="ggE-Qk-ENE" secondAttribute="width" multiplier="1/4" id="5Dp-WU-TFw"/>
                             <constraint firstItem="gM8-mP-XDu" firstAttribute="centerY" secondItem="ggE-Qk-ENE" secondAttribute="centerY" id="5nR-nI-B8p"/>
                             <constraint firstItem="mVi-NA-Soi" firstAttribute="centerY" secondItem="ggE-Qk-ENE" secondAttribute="centerY" constant="-20.5" id="6bv-ga-fbF"/>
                             <constraint firstItem="mTt-a4-1kp" firstAttribute="centerY" secondItem="PVc-L3-ORx" secondAttribute="centerY" id="8Ed-5m-k6G"/>
@@ -226,7 +226,7 @@
                             <constraint firstItem="PVc-L3-ORx" firstAttribute="leading" secondItem="eOa-jT-sxn" secondAttribute="trailing" id="UuG-T3-lHC"/>
                             <constraint firstItem="mVi-NA-Soi" firstAttribute="top" secondItem="ggE-Qk-ENE" secondAttribute="top" constant="5" id="VTh-eX-0aR"/>
                             <constraint firstItem="Dtf-QS-R7X" firstAttribute="bottom" secondItem="sup-um-DUK" secondAttribute="top" constant="-20" id="VbK-gU-KVM"/>
-                            <constraint firstItem="Dtf-QS-R7X" firstAttribute="height" secondItem="hl7-aK-QJr" secondAttribute="height" multiplier="1.1" id="WBE-qm-whG"/>
+                            <constraint firstItem="Dtf-QS-R7X" firstAttribute="height" secondItem="hl7-aK-QJr" secondAttribute="height" multiplier="1.4" id="WBE-qm-whG"/>
                             <constraint firstItem="sup-um-DUK" firstAttribute="height" secondItem="GY3-7Z-jYk" secondAttribute="height" id="XAP-Xy-gnG"/>
                             <constraint firstItem="7e7-aJ-DGu" firstAttribute="width" secondItem="sup-um-DUK" secondAttribute="width" multiplier="0.7" id="YHk-yr-iUa"/>
                             <constraint firstItem="c5A-X7-0WL" firstAttribute="width" secondItem="yxv-dc-3md" secondAttribute="width" id="YIk-Eu-YC1"/>
@@ -235,6 +235,7 @@
                             <constraint firstItem="Dtf-QS-R7X" firstAttribute="height" secondItem="cny-BK-zji" secondAttribute="height" multiplier="1/7" id="aLo-et-KQB"/>
                             <constraint firstItem="Dtf-QS-R7X" firstAttribute="centerX" secondItem="hl7-aK-QJr" secondAttribute="centerX" id="bL6-ay-H5T"/>
                             <constraint firstItem="sup-um-DUK" firstAttribute="centerX" secondItem="7e7-aJ-DGu" secondAttribute="centerX" id="ban-qJ-tDr"/>
+                            <constraint firstItem="XsS-Dz-QvM" firstAttribute="width" secondItem="c5A-X7-0WL" secondAttribute="width" id="bcu-M6-P9z"/>
                             <constraint firstItem="gM8-mP-XDu" firstAttribute="width" secondItem="ggE-Qk-ENE" secondAttribute="width" id="bh9-kc-CMh"/>
                             <constraint firstItem="1t7-XF-UFX" firstAttribute="width" secondItem="GY3-7Z-jYk" secondAttribute="width" multiplier="0.7" id="dYD-Hg-Uza"/>
                             <constraint firstItem="og0-QX-hKj" firstAttribute="centerY" secondItem="eOa-jT-sxn" secondAttribute="centerY" id="eGD-Un-YKq"/>
@@ -243,6 +244,7 @@
                             <constraint firstAttribute="centerX" secondItem="ggE-Qk-ENE" secondAttribute="centerX" id="gSw-54-h6f"/>
                             <constraint firstItem="eOa-jT-sxn" firstAttribute="top" secondItem="sup-um-DUK" secondAttribute="bottom" constant="20" id="gjl-kl-ReI"/>
                             <constraint firstItem="mTt-a4-1kp" firstAttribute="height" secondItem="PVc-L3-ORx" secondAttribute="height" multiplier="0.9" id="hw7-uj-vdz"/>
+                            <constraint firstItem="XsS-Dz-QvM" firstAttribute="width" secondItem="mVi-NA-Soi" secondAttribute="width" multiplier="0.8" id="j9E-zA-IML"/>
                             <constraint firstItem="XsS-Dz-QvM" firstAttribute="height" secondItem="mVi-NA-Soi" secondAttribute="height" id="jbi-nf-2bp"/>
                             <constraint firstAttribute="centerY" secondItem="Ag0-Xf-OH9" secondAttribute="centerY" id="kmx-w3-99o"/>
                             <constraint firstItem="mTt-a4-1kp" firstAttribute="centerX" secondItem="PVc-L3-ORx" secondAttribute="centerX" id="lYV-Bn-Vtf"/>
@@ -265,11 +267,15 @@
                                 <exclude reference="qrA-fn-ow9"/>
                                 <exclude reference="6bv-ga-fbF"/>
                                 <exclude reference="Hud-mD-0cS"/>
+                                <exclude reference="F56-q6-mVw"/>
+                                <exclude reference="j9E-zA-IML"/>
                                 <exclude reference="YIk-Eu-YC1"/>
                             </mask>
                         </variation>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="Ik6-Wm-CBR"/>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="buyButtonImage" destination="og0-QX-hKj" id="PYv-RP-1kM"/>
                         <outlet property="buyButtonOutlet" destination="eOa-jT-sxn" id="Dbw-s3-pxN"/>

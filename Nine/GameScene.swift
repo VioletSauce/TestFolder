@@ -166,7 +166,7 @@ var notInited:Bool = true
 
 //HUD overlay
 var pauseStopTexture = SKTexture(imageNamed: "pauseBB.png")
-var pauseReplayTextur = SKTexture(imageNamed: "PPPP.png")
+var pauseReplayTextur = SKTexture(imageNamed: "Pause1_cont.png")
 var pauseNode:SKSpriteNode!
 
 var soundNode:SKSpriteNode!
@@ -394,7 +394,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var fallingRepeated = SKAction.repeatActionForever(fallingAction)
         
         var fontSizeForThisNumber = (CGFloat(arc4random_uniform(UInt32(fontSizeForRandomize))) + fontSizeMin) * (self.frame.size.width / 1000) * sizeOfNumbersConts
-        //Текстовые параметры
+        //Текстовые параметрыf
         newNumberNode.text = "\(currentPattern[Int(arc4random_uniform(UInt32(currentPattern.count)))] + (3 * difficultyNow.patternNum))"
         newNumberNode.fontName = "Helvetica-Bold" //#leo шрифт цифр, если всё же решишь поменять
         newNumberNode.fontSize = fontSizeForThisNumber
@@ -512,7 +512,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    //     groundNode.physicsBody?.contactTestBitMask = numberCollisionMask
         self.addChild(groundNode)
         
-        scoreNode = createTextNode("Score: \(score)", xPosition: self.frame.size.width * 1/16, yPosition: self.frame.size.width * 2/16, zPosition: 10, fontName: "Helvetica", fontSize: 30 * multiForIpad(), color: UIColor.whiteColor())
+        scoreNode = createTextNode("Score: \(score)", xPosition: self.frame.size.width * 1/16, yPosition: pauseNode.position.y - pauseNode.frame.size.height/4, zPosition: 10, fontName: "Helvetica", fontSize: 30 * multiForIpad(), color: UIColor.whiteColor())
         
      //   scoreNode.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
         scoreNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
@@ -526,7 +526,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         circleOfXTwo.fillColor = UIColor.whiteColor()
         circleOfXTwo.strokeColor = SKColor.clearColor()
         circleOfXTwo.zPosition = 60
-        circleOfXTwo.position = CGPointMake(scoreNode.position.x + scoreNode.frame.size.width + circleOfXTwo.frame.size.width / 2, scoreNode.position.y + scoreNode.frame.size.height / 2)
+        circleOfXTwo.position = CGPointMake(scoreNode.position.x + scoreNode.frame.size.width + circleOfXTwo.frame.size.width / 2, scoreNode.position.y - scoreNode.fontSize * 1/10 )
         xTwo = createTextNode("x2", xPosition: circleOfXTwo.position.x, yPosition: circleOfXTwo.position.y, zPosition: 61, fontName: "Helvetica", fontSize: 20 * multiForIpad(), color: UIColor.blackColor())
         xTwo.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
  //       xTwo.position = CGPointMake(xTwo.position.x, xTwo.position.y - xTwo.frame.size.height / 2)
@@ -543,8 +543,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         whitescreen.alpha = 0.5
         whitescreen.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         pausedNode.addChild(whitescreen)
-        var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "pauseButton.png"), color: UIColor.greenColor(), size: CGSizeMake(self.frame.size.width / 3, self.frame.size.width / 3))
-        playButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "Pause1_Go.png"), color: UIColor.greenColor(), size: CGSizeMake(self.frame.size.width / 4, self.frame.size.width / 4))
+        playButton.position = CGPointMake(self.frame.width * 3/10, CGRectGetMidY(self.frame))
         pausedNode.addChild(playButton)
         pausedNode.zPosition = 50
         initMainMenu()
@@ -998,7 +998,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func resizeScores() {
-        circleOfXTwo.position = CGPointMake(scoreNode.position.x + scoreNode.frame.size.width + circleOfXTwo.frame.size.width / 2, scoreNode.position.y + scoreNode.frame.size.height / 2)
+        circleOfXTwo.position = CGPointMake(scoreNode.position.x + scoreNode.frame.size.width + circleOfXTwo.frame.size.width / 2, scoreNode.position.y + scoreNode.frame.size.height * 4/10)
         xTwo.position = CGPointMake(circleOfXTwo.position.x, circleOfXTwo.position.y)
 
     }
@@ -1061,6 +1061,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.scene?.paused = true
         gamePaused = true
         pauseNode.texture = pauseReplayTextur
+        pauseNode.size = CGSizeMake(self.frame.width / 4, self.frame.width / 4)
+        pauseNode.position = CGPointMake(self.frame.width * 7/10, CGRectGetMidY(self.frame))
         backGroundMusic.stop()
         numbersNode.speed = 0
         bossNode.speed = 0
@@ -1101,7 +1103,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if soundIsOn {
             backGroundMusic.play()
         }
-        
+        pauseNode.size = CGSizeMake(self.frame.size.width / 10 * sizeForPauseButtonMultiplier, self.frame.size.width / 10 * sizeForPauseButtonMultiplier)
+        pauseNode.position = CGPointMake(self.frame.size.width * 14 / 16 * fieldsForPauseButtonMultiplier, self.frame.size.width * 2 / 16 * fieldsForPauseButtonMultiplier)
         gamePaused = false
         self.scene?.paused = false
         numbersNode.speed = 1
@@ -1162,6 +1165,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.scene?.paused = false
         pauseNode.texture = pauseStopTexture
+        pauseNode.size = CGSizeMake(self.frame.size.width / 10 * sizeForPauseButtonMultiplier, self.frame.size.width / 10 * sizeForPauseButtonMultiplier)
+        pauseNode.position = CGPointMake(self.frame.size.width * 14 / 16 * fieldsForPauseButtonMultiplier, self.frame.size.width * 2 / 16 * fieldsForPauseButtonMultiplier)
+
         
         invincibility = false
         

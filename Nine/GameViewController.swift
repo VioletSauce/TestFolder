@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 import iAd
-
+import GoogleMobileAds
 
 var gameOvered:Bool = false
 extension SKNode {
