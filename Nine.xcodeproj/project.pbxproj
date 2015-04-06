@@ -22,9 +22,9 @@
 		9093CD041A43482400EA2457 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9093CD031A43482400EA2457 /* EventKit.framework */; };
 		9093CD061A43482B00EA2457 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9093CD051A43482B00EA2457 /* EventKitUI.framework */; };
 		9093CD081A43483400EA2457 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9093CD071A43483400EA2457 /* MessageUI.framework */; };
-		909E57931ACADB8600E37757 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 909E57911ACADA3400E37757 /* GoogleMobileAds.framework */; };
 		90CA2EB51ACD3428001E8175 /* Pause1_cont.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CA2EB31ACD3428001E8175 /* Pause1_cont.png */; };
 		90CA2EB61ACD3428001E8175 /* Pause1_GO.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CA2EB41ACD3428001E8175 /* Pause1_GO.png */; };
+		90CA2EB81AD282B1001E8175 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90CA2EB71AD282B1001E8175 /* GoogleMobileAds.framework */; };
 		90D3ED7C1A27DB7D00FC2CBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D3ED7B1A27DB7D00FC2CBB /* AppDelegate.swift */; };
 		90D3ED7E1A27DB7D00FC2CBB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 90D3ED7D1A27DB7D00FC2CBB /* GameScene.sks */; };
 		90D3ED821A27DB7D00FC2CBB /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D3ED811A27DB7D00FC2CBB /* GameViewController.swift */; };
@@ -82,9 +82,9 @@
 		9093CD031A43482400EA2457 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		9093CD051A43482B00EA2457 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		9093CD071A43483400EA2457 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		909E57911ACADA3400E37757 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "../../Downloads/GoogleMobileAdsSdkiOS-7.0.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		90CA2EB31ACD3428001E8175 /* Pause1_cont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pause1_cont.png; sourceTree = "<group>"; };
 		90CA2EB41ACD3428001E8175 /* Pause1_GO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pause1_GO.png; sourceTree = "<group>"; };
+		90CA2EB71AD282B1001E8175 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = Nine/GoogleMobileAds.framework; sourceTree = "<group>"; };
 		90D3ED761A27DB7D00FC2CBB /* Nine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90D3ED7A1A27DB7D00FC2CBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90D3ED7B1A27DB7D00FC2CBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				909E57931ACADB8600E37757 /* GoogleMobileAds.framework in Frameworks */,
+				90CA2EB81AD282B1001E8175 /* GoogleMobileAds.framework in Frameworks */,
 				90F1ED231A39FDE50012A2CA /* SystemConfiguration.framework in Frameworks */,
 				9093CD081A43483400EA2457 /* MessageUI.framework in Frameworks */,
 				9093CD061A43482B00EA2457 /* EventKitUI.framework in Frameworks */,
@@ -249,7 +249,7 @@
 		90DB206D1A2894ED00920156 /* Frameeworks */ = {
 			isa = PBXGroup;
 			children = (
-				909E57911ACADA3400E37757 /* GoogleMobileAds.framework */,
+				90CA2EB71AD282B1001E8175 /* GoogleMobileAds.framework */,
 				9093CD071A43483400EA2457 /* MessageUI.framework */,
 				9093CD051A43482B00EA2457 /* EventKitUI.framework */,
 				9093CD031A43482400EA2457 /* EventKit.framework */,
@@ -522,6 +522,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/alexanderpodkopaev/Downloads/GoogleMobileAdsSdkiOS-7.0.0",
+					"$(PROJECT_DIR)/Nine",
 				);
 				INFOPLIST_FILE = Nine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -546,6 +547,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/alexanderpodkopaev/Downloads/GoogleMobileAdsSdkiOS-7.0.0",
+					"$(PROJECT_DIR)/Nine",
 				);
 				INFOPLIST_FILE = Nine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
