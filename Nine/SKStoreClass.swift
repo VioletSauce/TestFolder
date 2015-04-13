@@ -31,7 +31,6 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
     }
     
     func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
-        println("aa")
         productsArray = response.products as! [SKProduct]
     }
     

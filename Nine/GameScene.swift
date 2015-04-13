@@ -543,7 +543,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         whitescreen.alpha = 0.5
         whitescreen.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         pausedNode.addChild(whitescreen)
-        var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "Pause1_Go.png"), color: UIColor.greenColor(), size: CGSizeMake(self.frame.size.width / 4, self.frame.size.width / 4))
+        var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "Pause1_GO.png"), color: UIColor.greenColor(), size: CGSizeMake(self.frame.size.width / 4, self.frame.size.width / 4))
         playButton.position = CGPointMake(self.frame.width * 3/10, CGRectGetMidY(self.frame))
         pausedNode.addChild(playButton)
         pausedNode.zPosition = 50

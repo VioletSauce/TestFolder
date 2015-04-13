@@ -39,7 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSUserDefaults.standardUserDefaults().synchronize()
         }
         if checkReachability() {
-            println("a")
             SKStoreHandler = SKStoreClass(identifiers: ["AdsFreeNine"])
      //       self.authenticatePlayer()
             removedAds()
@@ -100,10 +99,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             reachability = Reachability.reachabilityForInternetConnection()
             networkStatus = reachability.currentReachabilityStatus()
             if networkStatus.value != NotReachable.value {
-                println("internet")
                 return true
             } else {
-                println("notReachable")
                 return false
             }
         }
