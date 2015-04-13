@@ -247,10 +247,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.scene?.paused = true
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
         
-        var touch = touches.anyObject() as UITouch
+        var touch = touches.first as! UITouch
         var location:CGPoint = touch.locationInNode(self)
         var node = self.nodeAtPoint(location)
         if node.name == "pauseButton" {
@@ -634,7 +634,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Проверка и изменение сложности
         switch difficultyNow.diffNum {
         case 1:
-            Flurry.endTimedEvent("TimeForFirstLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForFirstLevel"))
+            Flurry.endTimedEvent("TimeForFirstLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForFirstLevel") as [NSObject : AnyObject])
             difficultyNow = mediumDiff
             currentBr = difficultyNow.brForLevel
             currentSat = difficultyNow.satForLevel
@@ -643,16 +643,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             Flurry.logEvent("TimeForSecondLevel", timed: true)
             wasScore = score
         case 2:
-            Flurry.endTimedEvent("TimerForSecondLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForSecondLevel"))
+            Flurry.endTimedEvent("TimerForSecondLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForSecondLevel") as [NSObject : AnyObject])
             difficultyNow = hardDiff
             currentBr = difficultyNow.brForLevel
             currentSat = difficultyNow.satForLevel
             Flurry.logEvent("TimeForThirdLevel", timed: true)
             wasScore = score
         case 3:
-            Flurry.endTimedEvent("TimeForThirdLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForThirdLevel"))
+            Flurry.endTimedEvent("TimeForThirdLevel", withParameters: NSDictionary(object: (score - wasScore), forKey: "ScoreForThirdLevel") as [NSObject : AnyObject])
             currentGameState = .GameOver
-            Flurry.endTimedEvent("TimeBeforeEnd", withParameters: NSDictionary(object: score, forKey: "TotalScore"))
+            Flurry.endTimedEvent("TimeBeforeEnd", withParameters: NSDictionary(object: score, forKey: "TotalScore") as [NSObject : AnyObject])
             backGroundMusic.stop()
         default:
             return
@@ -782,7 +782,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 bgSat = 1
                 bgBr = 1
                 for numbers in numbersNode.children {
-                    var curNumb:SKLabelNode = numbers as SKLabelNode
+                    var curNumb:SKLabelNode = numbers as! SKLabelNode
                     curNumb.removeFromParent()
                 }
                 invincibility = true

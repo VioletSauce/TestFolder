@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func removedAds() {
         if !isAdsRemoved {
             IAPEncryptionKey = createEncryptionKey()
-            if IAPEncryptionKey == NSUserDefaults.standardUserDefaults().valueForKey("Bundle ID mod")! as Int {
+            if IAPEncryptionKey == NSUserDefaults.standardUserDefaults().valueForKey("Bundle ID mod")! as! Int {
                 isAdsRemoved = true
             } else {
                 adsActive = true
@@ -134,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var applicationDocumetnsDirectory: NSURL = {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as NSURL
+        return urls[urls.count-1] as! NSURL
     }()
     
     lazy var managedObjectModel: NSManagedObjectModel = {
@@ -153,7 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
             dict[NSUnderlyingErrorKey] = error
-            error = NSError(domain: "APDEL_STORAGE_UNABLE_TO_SAVE", code: 9999, userInfo: dict)
+            error = NSError(domain: "APDEL_STORAGE_UNABLE_TO_SAVE", code: 9999, userInfo: dict as NSDictionary as [NSObject : AnyObject])
             NSLog("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }

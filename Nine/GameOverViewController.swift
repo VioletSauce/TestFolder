@@ -42,7 +42,7 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
         if adsActive && !isAdsRemoved{
             interstitialAd = cicleInterstitialAd()
         }
-        let appDel = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         managedContext = appDel.managedObjectContext
         }
 
@@ -53,6 +53,7 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
     override func viewDidAppear(animated: Bool) {
         if !interAdWasUsed {
         bannerView?.presentInView(self)
+        bannerView?.requestAd()
         gameCenterHandler.delegate = self
         transformView()
         calculateScores()
@@ -89,7 +90,7 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
             default:
                 println("other")
             }
-            SKPaymentQueue.defaultQueue().finishTransaction(transaction as SKPaymentTransaction)
+            SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
         }
     }
     
@@ -124,14 +125,14 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
             var newScores = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
             managedContext.save(nil)
             scores = managedContext.executeFetchRequest(request, error: nil)!
-            highScores = scores[0].valueForKey("highScore") as Int
+            highScores = scores[0].valueForKey("highScore") as! Int
         } else {
-            highScores = scores[0].valueForKey("highScore") as Int
+            highScores = scores[0].valueForKey("highScore") as! Int
         }
         if highScores < score {
             scores[0].setValue(score, forKey: "highScore")
         }
-        highScores = scores[0].valueForKey("highScore") as Int
+        highScores = scores[0].valueForKey("highScore") as! Int
         if gameCenterEnabled {
             if highScores > score {
                 GKScoreObj.value = Int64(highScores)
@@ -146,7 +147,7 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
                 })
     //        }
         }
-        highScores = scores[0].valueForKey("highScore") as Int
+        highScores = scores[0].valueForKey("highScore") as! Int
         managedContext.save(nil)
         scoreBestLabel.text = "\(highScores)"
         scoreBestLabel.font = UIFont(name: "\(scoreBestLabel.font.fontName)", size: scoreBestLabel.frame.size.height)
@@ -159,7 +160,7 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
         newInterAd.delegate = self
         newInterAd.adUnitID = "ca-app-pub-8371737787665531/5139756806"
         let request:GADRequest = GADRequest()
-        request.testDevices = NSArray(objects: "ca-app-pub-8371737787665531/5139756806")
+        request.testDevices = NSArray(objects: "ca-app-pub-8371737787665531/5139756806") as! [String]
         newInterAd.loadRequest(request)
         return newInterAd
     }
@@ -238,7 +239,7 @@ class GameOverViewController: UIViewController, GADInterstitialDelegate, SKPayme
         let shareActivity = "I score a \(score) in 9! Can you beat me?"
         let activityVC:UIActivityViewController = UIActivityViewController(activityItems: [shareActivity], applicationActivities: nil)
         self.presentViewController(activityVC, animated: true, completion: nil)
-        Flurry.logEvent("ShareButtonPressed", withParameters: NSDictionary(object: score, forKey: "ScoreWhenShared"))
+        Flurry.logEvent("ShareButtonPressed", withParameters: NSDictionary(object: score, forKey: "ScoreWhenShared") as [NSObject : AnyObject])
     }
     @IBAction func removeAdsButtonPressed(sender: UIButton) {
         if checkReachability() {

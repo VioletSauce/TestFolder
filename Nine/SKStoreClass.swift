@@ -19,7 +19,7 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
     
     init(identifiers:[String]){
         super.init()
-        var request:SKProductsRequest = SKProductsRequest(productIdentifiers: NSSet(array: identifiers))
+        var request:SKProductsRequest = SKProductsRequest(productIdentifiers: NSSet(array: identifiers) as Set<NSObject>)
         request.delegate = self
         request.start()
 /*        if !haveObserver {
@@ -32,7 +32,7 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
     
     func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
         println("aa")
-        productsArray = response.products as [SKProduct]
+        productsArray = response.products as! [SKProduct]
     }
     
     func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
@@ -64,8 +64,8 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
                 }
             }
             if transaction.transactionState! == .Purchased || transaction.transactionState! == .Failed || transaction.transactionState! == .Restored{
-                queue.finishTransaction(transaction as SKPaymentTransaction)
-                SKPaymentQueue.defaultQueue().finishTransaction(transaction as SKPaymentTransaction)
+                queue.finishTransaction(transaction as! SKPaymentTransaction)
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
                 let selfGODelegate = delegate as? GameOverViewController
                 selfGODelegate?.hideLoading()
             }
@@ -84,7 +84,7 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
             println("1")
             if SKPaymentQueue.canMakePayments() {
                 SKPaymentQueue.defaultQueue().addTransactionObserver(self)
-                var selfDelegate = delegate as GameOverViewController
+                var selfDelegate = delegate as! GameOverViewController
      //           selfDelegate.showLoading()
                 SKPaymentQueue.defaultQueue().addPayment(SKMutablePayment(product: productsArray[atPosition]))
             }
@@ -92,7 +92,7 @@ class SKStoreClass: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObs
     }
 
     func loadProducts(productIdentifiers:[String]) {
-        let request = SKProductsRequest(productIdentifiers: NSSet(array: productIdentifiers))
+        let request = SKProductsRequest(productIdentifiers: NSSet(array: productIdentifiers) as Set<NSObject>)
         request.delegate = self
         request.start()
     }

@@ -114,6 +114,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "Nine.AppDelegate.application (Nine.AppDelegate)(ObjectiveC.UIApplication, didFinishLaunchingWithOptions : Swift.Optional&lt;Swift.Dictionary&lt;ObjectiveC.NSObject, Swift.AnyObject&gt;&gt;) -&gt; Swift.Bool"
                   moduleName = "Nine"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/alexanderpodkopaev/Desktop/Nine/Nine/AppDelegate.swift"
                   timestampString = "443369147.463374"
                   startingColumnNumber = "9223372036854775807"
@@ -128,6 +129,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "Nine.AppDelegate.application (Nine.AppDelegate)(ObjectiveC.UIApplication, didFinishLaunchingWithOptions : Swift.Optional&lt;Swift.Dictionary&lt;ObjectiveC.NSObject, Swift.AnyObject&gt;&gt;) -&gt; Swift.Bool"
                   moduleName = "Nine"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/alexanderpodkopaev/Desktop/Nine/Nine/AppDelegate.swift"
                   timestampString = "443369147.463673"
                   startingColumnNumber = "9223372036854775807"
@@ -169,6 +171,85 @@
             endingLineNumber = "1064"
             landmarkName = "pauseGame()"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nine/GameScene.swift"
+            timestampString = "450623150.52898"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "655"
+            endingLineNumber = "655"
+            landmarkName = "changeLevel()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nine/SKStoreClass.swift"
+            timestampString = "450622702.389441"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "productsRequest(_:didReceiveResponse:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Nine.SKStoreClass.productsRequest (Nine.SKStoreClass)(Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.SKProductsRequest&gt;, didReceiveResponse : Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.SKProductsResponse&gt;) -&gt; ()"
+                  moduleName = "Nine"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alexanderpodkopaev/Desktop/Nine/Nine/SKStoreClass.swift"
+                  timestampString = "450623228.23616"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "73">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "@objc Nine.SKStoreClass.productsRequest (Nine.SKStoreClass)(Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.SKProductsRequest&gt;, didReceiveResponse : Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.SKProductsResponse&gt;) -&gt; ()"
+                  moduleName = "Nine"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alexanderpodkopaev/Desktop/Nine/Nine/SKStoreClass.swift"
+                  timestampString = "450623228.236908"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "94">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "@objc Nine.SKStoreClass.productsRequest (Nine.SKStoreClass)(Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.SKProductsRequest&gt;, didReceiveResponse : Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.SKProductsResponse&gt;) -&gt; ()"
+                  moduleName = "Nine"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alexanderpodkopaev/Desktop/Nine/Nine/SKStoreClass.swift"
+                  timestampString = "450623228.237261"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "137">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -24,7 +24,7 @@ class BannerViewClass:NSObject, GADBannerViewDelegate {
         bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait, origin: CGPointMake(0, 0))
         bannerView.adUnitID = adID
         request = GADRequest()
-        request.testDevices = NSArray(objects: adID)
+        request.testDevices = NSArray(objects: adID) as! [String]
    //     bannerView.loadRequest(request)
         bannerView.delegate = self
         bannerView.hidden = true
